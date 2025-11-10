@@ -1,7 +1,8 @@
 export interface Profile {
   id: number,
-  userName: string,
-  avataUrl: string | null,
+  username: string,
+  description: string,
+  avatarUrl: string | null,
   subscribersAmount: number,
   firstName: string,
   lastName: string,
