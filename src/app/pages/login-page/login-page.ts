@@ -1,12 +1,33 @@
-import { Component } from '@angular/core';
-
+import { AuthService } from './../../auth/auth';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import { from, map } from 'rxjs';
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
 })
 export class LoginPage {
+  authService = inject(AuthService);
+  router = inject(Router);
 
+  form = new FormGroup(
+  {
+    username: new FormControl<string | null>(null, Validators.required),
+    password: new FormControl<string | null>(null, Validators.required)
+  })
+
+  onSubmit() {
+    if (this.form.valid) {
+      //@ts-ignore
+      this.authService.login(this.form.value)
+        .subscribe(res => {
+          this.router.navigate(['']);
+          console.log(res);
+        });
+    }
+  }
 }

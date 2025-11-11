@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ProfileService } from './../../data/services/profile';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AppSideBar } from '../app-side-bar/app-side-bar';
 
@@ -10,5 +11,12 @@ import { AppSideBar } from '../app-side-bar/app-side-bar';
   styleUrl: './layout.scss',
 })
 export class Layout {
+  profileService = inject(ProfileService);
 
+  ngOnInit() {
+    console.log('ngOnInit');
+    this.profileService.getMe().subscribe(val => {
+      console.log(val);
+    })
+  }
 }
