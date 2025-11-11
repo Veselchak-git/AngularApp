@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './profile-page.scss',
 })
 export class ProfilePage {
-profile: any;
+  profile: any;
 
 }
