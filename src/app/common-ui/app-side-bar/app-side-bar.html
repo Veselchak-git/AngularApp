@@ -1,1 +1,35 @@
-<p>app-side-bar works!</p>
+<img
+src="/assets/svg/small-logo.svg"
+alt=""
+class="ml16 mb20"
+>
+
+<nav>
+  <ul class="main-menu-list">
+    <li>
+      @for (menuItem of menuItems; track $index) {
+        <button class="menu-item">
+          <svg [icon]="menuItem.icon"></svg>
+          <span>{{ menuItem.label }}</span>
+          <span></span>
+        </button>
+      }
+    </li>
+  </ul>
+</nav>
+
+<p class="medium-text mb20">Подписчики</p>
+<pre>{{subscribers$ | json}}</pre>  /*23 строка ошибка запроса с сервера*/
+@for (profile of subscribers$ | async; track profile.id) {
+  <app-subscriber-card>
+    [profile]="profile"
+  </app-subscriber-card>
+}
+
+<div class="mt20 to-subscribers">
+  <a
+    [routerLink]="['/subscribers']"
+    class="to-subscribers-link medium-text"
+    >Все подписчики</a>
+    <svg icon="arrow" class="to-subscribers-icon"></svg>
+</div>
