@@ -11,11 +11,4 @@ import { AppSideBar } from '../app-side-bar/app-side-bar';
   styleUrl: './layout.scss',
 })
 export class Layout {
-  profileService = inject(ProfileService);
-
-  ngOnInit() {
-    this.profileService.getMe().subscribe(val => {
-      console.log(val);
-    })
-  }
 }

@@ -1,12 +1,33 @@
-import { Component } from '@angular/core';
+import { ProfileService } from './../../data/services/profile';
+import { Component, inject, Pipe } from '@angular/core';
+import { ProfileHeader } from "../../common-ui/profile-header/profile-header";
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { switchMap } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
+import { SubscriberCard } from "../../common-ui/sidebar/subscriber-card/subscriber-card";
+import { ImgUrlPipe } from "../../helpers/pipes/img-url-pipe";
 
 @Component({
   selector: 'app-profile-page',
-  imports: [],
+  imports: [ProfileHeader, AsyncPipe, RouterLink, SubscriberCard, ImgUrlPipe],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.scss',
 })
 export class ProfilePage {
-  profile: any;
+  profileService = inject(ProfileService);
+  route = inject(ActivatedRoute);
+  me$ = toObservable(this.profileService.me);
+  subscribers$ = this.profileService.getSubscribersShortList(5);
+
+
+  profile$ = this.route.params
+    .pipe(
+      switchMap(({id}) => {
+        if (id === 'me') {return this.me$}
+
+        return this.profileService.getAccount(id);
+      })
+    );
 
 }
