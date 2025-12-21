@@ -4,10 +4,10 @@
     <app-profile-header
       [profile]="profile"
     ></app-profile-header>
-    <button class="btn to-setting-btn" routerLink="['/settings']">
+    <a class="btn to-setting-btn" [routerLink]="['/settings']">
       Редактировать
-      <img src="/assets/svg/settings.svg" class="to-setting-icon">
-    </button>
+      <svg icon="settings" class="to-setting-icon"></svg>
+    </a>
   </header>
   <main class="profile-page__body">
     <div></div>
@@ -26,7 +26,7 @@
       </div>
       <h3 class="h6 mb16 mt16">Навыки</h3>
       <div class="stack-wrapper">
-        @for (skill of ['123', '13']; track skill) {
+        @for (skill of profile.stack; track skill) {
           <div class="skill-tag">{{ skill }}</div>
         }
       </div>
