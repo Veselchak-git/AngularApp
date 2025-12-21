@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ProfileService } from '../../../data/services/profile';
-import { debounceTime, startWith, switchMap } from 'rxjs';
+import { debounceTime, startWith, switchMap, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-profile-filters',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './profile-filters.html',
   styleUrl: './profile-filters.scss',
 })
@@ -20,20 +21,22 @@ export class ProfileFilters {
     stack: ['']
   })
 
-  searchFormSub!: Subscription;
+
 
   constructor() {
-    this.searchFormSub = this.searchForm.valueChanges
+    this.searchForm.valueChanges
       .pipe(
         startWith({}),
-        debounceTime(300),
+        debounceTime(500),
         switchMap(formValue => {
           return this.profileService.filterProfiles(formValue);
-        }))
+        }),
+        takeUntilDestroyed()
+      )
       .subscribe();
+
+
   }
 
-  ngOnDestroy() {
-    this.searchFormSub.unsubscribe();
-  }
+
 }

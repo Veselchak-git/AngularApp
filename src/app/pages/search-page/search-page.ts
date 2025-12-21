@@ -15,7 +15,7 @@ import { ProfileFilters } from "./profile-filters/profile-filters";
 export class SearchPage {
   protected readonly title = signal('AngularApp');
   profileService = inject(ProfileService);
-  profiles = this.profileService.filteredProfiles();
+  profiles = this.profileService.filteredProfiles
 
   constructor() {
   }
