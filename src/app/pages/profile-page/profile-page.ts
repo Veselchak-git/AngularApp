@@ -10,7 +10,7 @@ import { ImgUrlPipe } from "../../helpers/pipes/img-url-pipe";
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ProfileHeader, AsyncPipe, RouterLink, SubscriberCard, ImgUrlPipe],
+  imports: [ProfileHeader, AsyncPipe, RouterLink,ImgUrlPipe],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.scss',
 })
