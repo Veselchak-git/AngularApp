@@ -7,7 +7,7 @@ import { ProfileFilters } from "./profile-filters/profile-filters";
 
 @Component({
   selector: 'app-search-page',
-  imports: [ProfileCard, ProfileFilters, AsyncPipe],
+  imports: [ProfileCard, ProfileFilters],
   standalone: true,
   templateUrl: './search-page.html',
   styleUrl: './search-page.scss',
