@@ -15,7 +15,7 @@
   place-self: center;
 }
 
-.password-input {
+.password-input, .username-input {
   position: relative;
 }
 
@@ -31,4 +31,12 @@
 
 .password-eye-btn.active {
   color: var(--primary-color);
+}
+
+.telegram-logo {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  background: none;
+  border: none;
 }
