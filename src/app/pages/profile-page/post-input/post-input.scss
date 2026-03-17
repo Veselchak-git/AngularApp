@@ -1,7 +1,7 @@
 .post-input-wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 1fr) ;
-  width: 688px;
+  grid-template-columns: auto 1fr auto auto;
+  max-width: 688px;
   height: 76px;
   align-items: center;
   background: var(--dark-color);
@@ -10,13 +10,15 @@
 }
 
 .post-input {
-  width: 504px;
+  min-width: 104px;
+  max-width: 504px;
 }
 
 .post-input__avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  margin-right: 13px;
 }
 
 .to-message-icon {
@@ -45,3 +47,5 @@
   border: none;
   cursor: pointer;
 }
+
+

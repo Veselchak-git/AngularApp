@@ -13,5 +13,13 @@ img {
 
 .username-and-name {
   text-align: left;
-  
+
+}
+
+@media screen and (width <= 504px) {
+  img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
 }
