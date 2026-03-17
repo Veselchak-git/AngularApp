@@ -6,4 +6,16 @@
 .profile-card__wrapper {
   display: grid;
   grid-gap: 8px;
+  height: 760px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    background: var(--light-transparent-color);
+    border-radius: 4px;
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+  }
 }

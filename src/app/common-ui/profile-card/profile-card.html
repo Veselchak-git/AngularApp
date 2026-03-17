@@ -20,8 +20,17 @@
       }
     </div>
     <div class="profile-card_action-btns">
-      <button type="button" class="btn">Подписаться</button>
-    </div>
+        <button type="button" class="btn subscribe-btn">
+          Подписаться
+          <svg icon="subscribe" class="subscribe-icon"></svg>
+        </button>
+
+          <a  class="btn visit-btn" (click)="goToProfile(profile.id)">
+            <svg icon="visit" class="visit-icon"></svg>
+          </a>
+
+      </div>
+
   </div>
 }
 

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef} from '@angular/core';
 
 @Component({
   selector: 'svg[icon]',
@@ -9,6 +9,15 @@ import { Component, Input } from '@angular/core';
 })
 export class SvgIcon {
   @Input() icon= '';
+
+  constructor(private elementRef: ElementRef<SVGElement>) {}
+
+  ngOnInit() {
+    const svg = this.elementRef.nativeElement;
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', this.href);
+    svg.appendChild(use);
+  }
 
   get href() {
     return `/assets/svg/${this.icon}.svg#${this.icon}`;

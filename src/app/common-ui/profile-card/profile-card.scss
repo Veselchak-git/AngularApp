@@ -31,3 +31,36 @@
   flex-wrap: wrap;
   gap: 4px;
 }
+
+.subscribe-btn {
+  width: 157px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subscribe-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--dark-color);
+}
+
+.visit-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 14px;
+}
+
+.visit-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--dark-color);
+}
+
+.profile-card_action-btns {
+  display: flex;
+  gap: 8px;
+}

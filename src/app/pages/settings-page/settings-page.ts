@@ -1,5 +1,5 @@
-import { firstValueFrom } from 'rxjs';
-import { Component, effect, inject, ViewChild } from '@angular/core';
+import { firstValueFrom, switchMap} from 'rxjs';
+import { Component, effect, inject, input, ViewChild } from '@angular/core';
 import { ProfileHeader } from "../../common-ui/profile-header/profile-header";
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProfileService } from '../../data/services/profile';

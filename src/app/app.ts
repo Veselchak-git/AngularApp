@@ -1,5 +1,4 @@
 import { Component} from '@angular/core';
-import { ProfileCard } from './common-ui/profile-card/profile-card';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

@@ -1,0 +1,19 @@
+@if (profile$ | async; as profile) {
+  @if (isCurrentUser) {
+    <div class="post-input-wrapper">
+      @if (profile.avatarUrl) {
+        <img class="post-input__avatar" [src]="profile.avatarUrl | imgUrl" alt="">
+      } @else {
+          <img src="/assets/images/avatar-placeholder.png" alt="">
+      }
+
+      <input type="text" class="tt-form-input post-input" placeholder="Напишите что-нибудь...">
+      <button class="emoji-btn">
+        <svg icon="emoji-btn" class="to-emoji-icon"></svg>
+      </button>
+      <button class="btn message-btn">
+        <svg icon="message-btn" class="to-message-icon"></svg>
+      </button>
+    </div>
+  }
+}
