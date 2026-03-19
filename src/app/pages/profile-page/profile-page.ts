@@ -27,9 +27,7 @@ export class ProfilePage {
     .pipe(
       switchMap(({id}) => {
         if (id === 'me') {return this.me$}
-
         return this.profileService.getAccount(id);
       })
     );
-
 }

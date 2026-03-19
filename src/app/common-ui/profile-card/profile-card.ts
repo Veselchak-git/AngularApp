@@ -1,15 +1,13 @@
+import { ProfileService } from './../../data/services/profile';
+import { Profile } from './../../data/interfaces/profile.interface';
 import { Component, inject, Input } from '@angular/core';
-import { Profile } from '../../data/interfaces/profile.interface';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url-pipe';
 import { SvgIcon } from "../svg-icon/svg-icon";
-import { ProfileService } from '../../data/services/profile';
-import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import {Router } from '@angular/router';
 @Component({
   selector: 'app-profile-card',
   standalone: true,
-  imports: [ImgUrlPipe, SvgIcon, AsyncPipe],
+  imports: [ImgUrlPipe, SvgIcon],
   templateUrl: './profile-card.html',
   styleUrl: './profile-card.scss',
 })
