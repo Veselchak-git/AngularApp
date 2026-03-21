@@ -1,11 +1,12 @@
 import { ProfileService } from './../../data/services/profile';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { SvgIcon } from "../svg-icon/svg-icon";
 import { SubscriberCard } from "../sidebar/subscriber-card/subscriber-card";
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AsyncPipe, JsonPipe} from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ImgUrlPipe } from "../../helpers/pipes/img-url-pipe";
+import { AuthService } from '../../auth/auth';
 
 @Component({
   selector: 'app-side-bar',
@@ -16,7 +17,9 @@ import { ImgUrlPipe } from "../../helpers/pipes/img-url-pipe";
 })
 export class AppSideBar {
   profileService = inject(ProfileService);
-
+  showMenu = signal(false);
+  router = inject(Router);
+  auth = inject(AuthService);
 
   subscribers$ = this.profileService.getSubscribersShortList();
 
@@ -44,5 +47,23 @@ export class AppSideBar {
     firstValueFrom(this.profileService.getMe())
   }
 
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.showMenu.set(!this.showMenu());
+  }
+
+  closeMenu() {
+    this.showMenu.set(false);
+  }
+
+  goToSettings() {
+    this.router.navigate(['/settings']);
+    this.closeMenu();
+  }
+
+  logout() {
+    this.auth.logout(); // предположим
+    this.closeMenu();
+  }
 }
 

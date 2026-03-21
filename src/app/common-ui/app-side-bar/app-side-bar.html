@@ -21,10 +21,12 @@ class="ml16 mb20"
 
 <p class="medium-text mb20">Подписчики</p>
 @for (profile of subscribers$ | async; track profile.id) {
-  <app-subscriber-card
-  [profile]="profile"
-  >
-  </app-subscriber-card>
+  <a class="subscribers" [routerLink]="['/profile', profile.id]">
+    <app-subscriber-card
+    [profile]="profile"
+    ></app-subscriber-card>
+  </a>
+
 }
 <div class="mt20 to-subscribers">
   <a
@@ -44,9 +46,20 @@ class="ml16 mb20"
     }
     <div class="medium-text username-text">{{ me.username }}</div>
 
-    <a [routerLink]="['/settings']" class="settings-btn">
+    <!--<a [routerLink]="['/settings']" class="settings-btn">
       <svg icon="settings"></svg>
-    </a>
+    </a>-->
+    <div class="settings-wrapper">
+      <button class="settings-btn" (click)="toggleMenu($event)">
+        <svg icon="settings"></svg>
+      </button>
+      @if (showMenu()) {
+        <div class="dropdown-menu" (click)="$event.stopPropagation()">
+          <button class="settings-wrapper-btns" (click)="goToSettings()">Настройки</button>
+          <button class="settings-wrapper-btns" (click)="logout()">Выход</button>
+        </div>
+      }
+    </div>
   }
 </footer>
 

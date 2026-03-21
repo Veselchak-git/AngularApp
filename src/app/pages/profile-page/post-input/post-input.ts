@@ -30,7 +30,7 @@ export class PostInput {
           this.isCurrentUser = true;
           return this.me$
         }
-
+        this.isCurrentUser = false;
         return this.profileService.getAccount(id);
       })
     );

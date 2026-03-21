@@ -22,11 +22,16 @@ export class ProfilePage {
   route = inject(ActivatedRoute);
   me$ = toObservable(this.profileService.me);
   subscribers$ = this.profileService.getSubscribersShortList(5);
+  isCurrentUser: boolean = false;
 
   profile$ = this.route.params
     .pipe(
       switchMap(({id}) => {
-        if (id === 'me') {return this.me$}
+        if (id === 'me') {
+          this.isCurrentUser = true;
+          return this.me$
+        }
+        this.isCurrentUser = false;
         return this.profileService.getAccount(id);
       })
     );
