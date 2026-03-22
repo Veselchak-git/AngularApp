@@ -7,10 +7,13 @@ import { ProfileService } from '../../../data/services/profile';
 import { switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { SvgIcon } from "../../../common-ui/svg-icon/svg-icon";
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-post-input',
-  imports: [ImgUrlPipe, AsyncPipe, SvgIcon],
+  imports: [ImgUrlPipe, AsyncPipe, SvgIcon, PickerComponent, FormsModule],
+  standalone: true,
   templateUrl: './post-input.html',
   styleUrl: './post-input.scss',
 })
@@ -34,4 +37,25 @@ export class PostInput {
         return this.profileService.getAccount(id);
       })
     );
+
+  postText = '';
+  showPicker = false;
+
+  toggleEmojiPicker() {
+    this.showPicker = !this.showPicker;
+  }
+
+  addEmoji(event: any) {
+    this.postText += event.emoji.native;
+  }
+
+  sendPost() {
+  }
+
+  autoResize(event: Event) {
+  const textarea = event.target as HTMLTextAreaElement;
+  textarea.style.height = 'auto';           // сбрасываем высоту
+  textarea.style.height = textarea.scrollHeight + 'px'; // устанавливаем по содержимому
 }
+}
+

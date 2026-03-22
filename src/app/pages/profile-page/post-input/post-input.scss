@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   max-width: 688px;
-  height: 76px;
+  min-height: 76px;
   align-items: center;
   background: var(--dark-color);
   border: 1px solid var(--light-color);
@@ -12,6 +12,20 @@
 .post-input {
   min-width: 104px;
   max-width: 504px;
+  min-height: 33px;
+  max-height: 100px;
+  resize: none;
+
+  &::-webkit-scrollbar {
+    background: var(--light-transparent-color);
+    border-radius: 4px;
+    width: 4px;
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+  }
 }
 
 .post-input__avatar {
@@ -48,4 +62,8 @@
   cursor: pointer;
 }
 
+.emoji-picker-container {
+  position: absolute;
+  left: 50%;
+}
 

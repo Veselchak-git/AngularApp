@@ -28,14 +28,14 @@ class="ml16 mb20"
   </a>
 
 }
-<div class="mt20 to-subscribers">
+<!--<div class="mt20 to-subscribers">
   <a
     [routerLink]="['/subscribers']"
     class="to-subscribers-link medium-text"
     >Все подписчики
   </a>
-  <svg icon="arrow" class="to-subscribers-icon"></svg>
-</div>
+  <svg icon="arrow" class="to-subscribers-icon to-subscribers"></svg>
+</div>-->
 
 <footer class="sidebar__footer">
   @if (me(); as me) {
@@ -46,9 +46,6 @@ class="ml16 mb20"
     }
     <div class="medium-text username-text">{{ me.username }}</div>
 
-    <!--<a [routerLink]="['/settings']" class="settings-btn">
-      <svg icon="settings"></svg>
-    </a>-->
     <div class="settings-wrapper">
       <button class="settings-btn" (click)="toggleMenu($event)">
         <svg icon="settings"></svg>

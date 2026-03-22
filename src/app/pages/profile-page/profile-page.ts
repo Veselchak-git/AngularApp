@@ -14,6 +14,7 @@ import { PostInput } from "./post-input/post-input";
 @Component({
   selector: 'app-profile-page',
   imports: [ProfileHeader, AsyncPipe, RouterLink, ImgUrlPipe, PostFeed, SvgIcon, PostInput],
+  standalone: true,
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.scss',
 })
