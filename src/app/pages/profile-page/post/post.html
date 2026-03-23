@@ -7,8 +7,17 @@
     </header>
       <p class="regular">{{ post.content }}</p>
       <p>{{post.comments}}</p>
-    <button class="" (click)="deletePost(post.id)">Удалить</button>
-    <button class="edit-post-btn">Редактировать</button>
+    <div class="post-menu-wrapper">
+      <button class="show-menu-btn" (click)="toggleMenu($event)">
+        <svg icon="post-menu"></svg>
+      </button>
+      @if (showMenu()) {
+        <div class="dropdown-menu" (click)="$event.stopPropagation()">
+          <button class="post-menu-btns">Редактировать</button>
+          <button class="post-menu-btns" (click)="deletePost(post.id)">Удалить</button>
+        </div>
+      }
+    </div>
   </div>
   <!--<div class="post-input-wrapper">
     <img class="post-input__avatar" [src]="profile.avatarUrl | imgUrl" alt="">
@@ -27,7 +36,6 @@
     </button>
   </div>-->
 }
-
 
 
 

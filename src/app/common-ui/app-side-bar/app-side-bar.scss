@@ -92,19 +92,6 @@
 }
 
 .settings-btn {
-    svg {
-      width: 13px;
-      height: 13px;
-      color: var(--primary-color);
-    }
-}
-
-.settings-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.settings-btn {
   background: var(--dark-hover-color);
   border: none;
   cursor: pointer;
@@ -114,15 +101,21 @@
   &:hover {
     opacity: 0.7;
   }
+  svg {
+      width: 13px;
+      height: 13px;
+      color: var(--primary-color);
+    }
 }
 
 .dropdown-menu {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   bottom: 100%;
   right: 0;
   margin-bottom: 8px;
   background: var(--dark-color);
-  min-width: 150px;
   border: 1px solid var(--dark-hover-color);
   border-radius: 8px;
 
