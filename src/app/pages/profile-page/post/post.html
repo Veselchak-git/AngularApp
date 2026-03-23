@@ -1,1 +1,33 @@
-<p>post works!</p>
+@for (post of posts$ | async; track post.id) {
+  <div class="post-wrapper">
+    <header>
+      <img class="post__avatar" [src]="post.author.avatarUrl | imgUrl" alt="">
+      <p>{{ post.author.firstName }} {{ post.author.lastName }}</p>
+      <span class="regular">{{ post.createdAt | date }}</span>
+    </header>
+      <p class="regular">{{ post.content }}</p>
+      <p>{{post.comments}}</p>
+    <button class="" (click)="deletePost(post.id)">Удалить</button>
+    <button class="edit-post-btn">Редактировать</button>
+  </div>
+  <!--<div class="post-input-wrapper">
+    <img class="post-input__avatar" [src]="profile.avatarUrl | imgUrl" alt="">
+    <textarea
+      class="tt-form-input post-input"
+      placeholder="Напишите что-нибудь..."
+      [(ngModel)]="postText"
+      rows="1"
+      (input)="autoResize($event)"
+    ></textarea>
+    <button class="emoji-btn" (click)="toggleEmojiPicker()">
+      <svg icon="emoji-btn" class="to-emoji-icon"></svg>
+    </button>
+    <button type="button" class="btn message-btn" (click)="sendPost()">
+      <svg icon="message-btn" class="to-message-icon"></svg>
+    </button>
+  </div>-->
+}
+
+
+
+

@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Profile } from '../interfaces/profile.interface';
 import { map, tap } from 'rxjs';
 import { Pageble } from '../interfaces/pageble.interface';
+import { Post } from '../interfaces/post.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -37,24 +38,20 @@ export class ProfileService {
 
   patchProfile(profile: Partial<Profile>) {
     return this.http.patch<Profile>(
-      `${this.baseApiUrl}account/me`,
-      profile
-    )
+      `${this.baseApiUrl}account/me`, profile)
   }
 
   uploadAvatar(file: File) {
     const fd = new FormData();
     fd.append('image', file);
     return this.http.post<Profile>(
-      `${this.baseApiUrl}account/upload_image`,
-      fd
-    )
+      `${this.baseApiUrl}account/upload_image`, fd)
+
   }
 
   filterProfiles(params: Record<string, any>) {
     return this.http.get<Pageble<Profile>>(
-      `${this.baseApiUrl}account/accounts`,
-      {params})
+      `${this.baseApiUrl}account/accounts`, {params})
       .pipe(
         tap(res => this.filteredProfiles.set(res.items))
     )

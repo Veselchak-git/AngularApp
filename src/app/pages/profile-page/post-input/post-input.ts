@@ -1,3 +1,4 @@
+import { PostService } from './../../../data/services/post-service';
 import { Component, inject, input} from '@angular/core';
 import { ImgUrlPipe } from "../../../helpers/pipes/img-url-pipe";
 import { Profile } from '../../../data/interfaces/profile.interface';
@@ -20,10 +21,12 @@ import { FormsModule } from '@angular/forms';
 export class PostInput {
   profile = input<Profile>()
   profileService = inject(ProfileService);
+  postService = inject(PostService);
   route = inject(ActivatedRoute);
   me$ = toObservable(this.profileService.me);
   subscribers$ = this.profileService.getSubscribersShortList(5);
-
+  postText = '';
+  showPicker = false;
   isCurrentUser: boolean = false;
 
   profile$ = this.route.params
@@ -38,9 +41,6 @@ export class PostInput {
       })
     );
 
-  postText = '';
-  showPicker = false;
-
   toggleEmojiPicker() {
     this.showPicker = !this.showPicker;
   }
@@ -49,13 +49,23 @@ export class PostInput {
     this.postText += event.emoji.native;
   }
 
-  sendPost() {
+  autoResize(event: Event) {
+    const textarea = event.target as HTMLTextAreaElement;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
   }
 
-  autoResize(event: Event) {
-  const textarea = event.target as HTMLTextAreaElement;
-  textarea.style.height = 'auto';           // сбрасываем высоту
-  textarea.style.height = textarea.scrollHeight + 'px'; // устанавливаем по содержимому
-}
+  sendPost() {
+    if (!this.postText.trim()) return;
+    const newPost = {
+      content: this.postText
+    };
+
+    this.postService.createPost(newPost).subscribe({
+      next: () => {window.location.reload()}
+    });
+    this.postText = "";
+    this.showPicker = false;
+  }
 }
 

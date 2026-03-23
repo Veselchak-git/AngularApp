@@ -62,7 +62,7 @@ export class AppSideBar {
   }
 
   logout() {
-    this.auth.logout(); // предположим
+    this.auth.logout();
     this.closeMenu();
   }
 }
