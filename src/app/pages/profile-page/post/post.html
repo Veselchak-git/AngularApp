@@ -1,35 +1,37 @@
 @for (post of posts$ | async; track post.id) {
   <div class="post-wrapper">
-    <header>
+    <header class="post-header">
       <img class="post__avatar" [src]="post.author.avatarUrl | imgUrl" alt="">
-      <p>{{ post.author.firstName }} {{ post.author.lastName }}</p>
-      <span class="regular">{{ post.createdAt | date }}</span>
+      <span class="post-author">{{ post.author.firstName }} {{ post.author.lastName }}</span>
+      <span class="post-date medium-text"> {{ post.createdAt | date }}</span>
+      <div class="post-menu-wrapper">
+        <button class="show-menu-btn menu-btn" (click)="togglePostMenu($event, post.id)">
+          <svg icon="post-menu"></svg>
+        </button>
+        @if (isPostMenuOpen(post.id)) {
+          <div class="dropdown-menu" (click)="$event.stopPropagation()">
+            <button class="post-menu-btns">Редактировать</button>
+            <button class="post-menu-btns" (click)="deletePost(post.id)">Удалить</button>
+          </div>
+        }
+      </div>
     </header>
-      <p class="regular">{{ post.content }}</p>
-      <p>{{post.comments}}</p>
-    <div class="post-menu-wrapper">
-      <button class="show-menu-btn" (click)="togglePostMenu($event, post.id)">
-        <svg icon="post-menu"></svg>
-      </button>
-      @if (isPostMenuOpen(post.id)) {
-        <div class="dropdown-menu" (click)="$event.stopPropagation()">
-          <button class="post-menu-btns">Редактировать</button>
-          <button class="post-menu-btns" (click)="deletePost(post.id)">Удалить</button>
-        </div>
-      }
+    <p class="post-content regular">{{ post.content }}</p>
+    <div class="actions-wrapper">
+      <div class="comments-wrapper">
+        <button class="show-comments-btn show-menu-btn " (click)="toggleCommentsMenu($event, post.id)">
+          <svg icon="comment"></svg>
+        </button>
+
+      </div>
+        <button class="like-btn show-menu-btn" (click)="toggleLike(post)">
+          <svg icon="like"></svg>
+          <p>{{post.likes}}</p>
+        </button>
     </div>
-    <div class="comments-wrapper">
-      <button class="show-comments-btn show-menu-btn " (click)="toggleCommentsMenu($event, post.id)">
-        <svg icon="comment"></svg>
-      </button>
-      @if (isCommentsMenuOpen(post.id)) {
-        <p>{{post.content}}</p>
-      }
-    </div>
-    <button class="like-btn show-menu-btn" (click)="toggleLike(post)">
-      <svg icon="like"></svg>
-      <p>{{post.likes}}</p>
-    </button>
+    @if (isCommentsMenuOpen(post.id)) {
+              <p>{{post.content}}</p>                       <!--!!!!!!!!!!!!!!!ДОЛЖЕН БЫТЬ post.comments!!!!!!!!!!!!!!!!!!!!!!!-->
+            }
   </div>
 }
 

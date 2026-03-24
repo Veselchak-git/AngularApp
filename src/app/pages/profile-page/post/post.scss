@@ -48,7 +48,6 @@
     background: none;
     color: var(--light-color);
     cursor: pointer;
-    font-size: 14px;
     border: none;
 
     &:hover {
@@ -69,4 +68,28 @@
 .like-btn {
   color: var(--light-color);
   gap: 5px;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.post-date {
+  color: var(--light-transparent-color);
+  margin-left: 15px;
+}
+
+.post-menu-wrapper {
+  margin-left: auto;
+}
+
+.post-content {
+  margin-left: 40px;
+}
+
+.actions-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 40px
 }
