@@ -13,7 +13,7 @@ import { PostInput } from "./post-input/post-input";
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ProfileHeader, AsyncPipe, RouterLink, ImgUrlPipe, PostFeed, SvgIcon, PostInput],
+  imports: [ProfileHeader, AsyncPipe, RouterLink, ImgUrlPipe, PostFeed, SvgIcon],
   standalone: true,
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.scss',

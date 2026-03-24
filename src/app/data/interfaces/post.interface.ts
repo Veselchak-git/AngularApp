@@ -9,8 +9,6 @@ export interface Post {
     createdAt: string,
     updatedAt: string,
     likes: number,
-    likesUsers: [
-      string
-    ],
+    likesUsers: String[],
     comments: String[]
 }

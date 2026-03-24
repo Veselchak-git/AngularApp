@@ -1,5 +1,5 @@
 import { PostService } from './../../../data/services/post-service';
-import { Component, inject, input} from '@angular/core';
+import { Component, inject, Input, input} from '@angular/core';
 import { ImgUrlPipe } from "../../../helpers/pipes/img-url-pipe";
 import { Profile } from '../../../data/interfaces/profile.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -27,6 +27,7 @@ export class PostInput {
   subscribers$ = this.profileService.getSubscribersShortList(5);
   postText = '';
   showPicker = false;
+  @Input() type: "post" | "comment" = "post";
   isCurrentUser: boolean = false;
 
   profile$ = this.route.params
@@ -60,12 +61,21 @@ export class PostInput {
     const newPost = {
       content: this.postText
     };
+    if (this.type == "post") {
+      this.postService.createPost(newPost).subscribe({
+        next: () => {window.location.reload()}
+      });
+      this.postText = "";
+      this.showPicker = false;
+    }
+    else {
+      this.postService.createComment(newPost).subscribe({
+        next: () => {window.location.reload()}
+      });
+      this.postText = "";
+      this.showPicker = false;
+    }
 
-    this.postService.createPost(newPost).subscribe({
-      next: () => {window.location.reload()}
-    });
-    this.postText = "";
-    this.showPicker = false;
   }
 }
 
