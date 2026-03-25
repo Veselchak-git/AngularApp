@@ -39,6 +39,9 @@
     height: 36px;
     border-radius: 50%;
   }
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .to-subscribers-search {

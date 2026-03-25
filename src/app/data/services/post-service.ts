@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable} from '@angular/core';
 import { Post } from '../interfaces/post.interface';
 import { BehaviorSubject, Observable} from 'rxjs';
+import { CommentInterface } from '../interfaces/comment.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -34,12 +35,12 @@ export class PostService {
     return this.http.get<Post>(`${this.baseApiUrl}post/${postId}`);
   }
 
-  createComment(postData: Partial<Post>): Observable<Post> {
-    return this.http.post<Post>(`${this.baseApiUrl}comment/`, postData);
+  createComment(commentData: Partial<CommentInterface>): Observable<CommentInterface> {
+    return this.http.post<CommentInterface>(`${this.baseApiUrl}comment/`, commentData);
   }
 
-  getComment() {
-
+  getComments(commentId: number): Observable<Post> {
+    return this.http.get<Post>(`${this.baseApiUrl}comment/${commentId}`);
   }
 
   editComment() {

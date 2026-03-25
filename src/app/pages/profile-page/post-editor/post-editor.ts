@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Post as PostModel } from '../../../data/interfaces/post.interface';
 import { FormsModule } from '@angular/forms';
-import { PostInput } from '../post-input/post-input';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { SvgIcon } from '../../../common-ui/svg-icon/svg-icon';
 

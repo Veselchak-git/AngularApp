@@ -10,7 +10,6 @@ export const routes: Routes = [
   {
     path: '', component: Layout, children: [
       {path: '', redirectTo: 'profile/me', pathMatch: 'full'},
-      {path: '', component: SearchPage},
       {path: 'profile/:id', component: ProfilePage},
       {path: 'settings', component: SettingsPage},
       {path: 'search', component: SearchPage}

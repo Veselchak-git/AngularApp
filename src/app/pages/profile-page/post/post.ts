@@ -9,10 +9,11 @@ import { SvgIcon } from '../../../common-ui/svg-icon/svg-icon';
 import { ProfileService } from '../../../data/services/profile';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { PostEditor } from '../post-editor/post-editor';
+import { PostInput } from "../post-input/post-input";
 
 @Component({
   selector: 'app-post',
-  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor],
+  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor, PostInput],
   standalone: true,
   templateUrl: './post.html',
   styleUrl: './post.scss',
@@ -104,6 +105,7 @@ export class Post {
     this.commentsMenuMap.set(postId, !current);
   }
 
+
   isPostMenuOpen(postId: number): boolean {
     return this.postMenuMap.get(postId) || false;
   }
@@ -149,4 +151,6 @@ export class Post {
         }
       });
   }
+
+  
 }
