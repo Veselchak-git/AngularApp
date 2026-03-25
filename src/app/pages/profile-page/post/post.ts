@@ -13,7 +13,7 @@ import { PostInput } from "../post-input/post-input";
 
 @Component({
   selector: 'app-post',
-  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor, PostInput],
+  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor],
   standalone: true,
   templateUrl: './post.html',
   styleUrl: './post.scss',
@@ -29,7 +29,7 @@ export class Post {
   subPosts$ = this.postService.getSubscriptionPosts();
   postMenuMap = new Map<number, boolean>();
   commentsMenuMap = new Map<number, boolean>();
-  isCurrentUser!: boolean;
+  isCurrentUser: boolean = false;
   isLiked!: boolean;
   postText = '';
   showPicker = false;
@@ -152,5 +152,5 @@ export class Post {
       });
   }
 
-  
+
 }
