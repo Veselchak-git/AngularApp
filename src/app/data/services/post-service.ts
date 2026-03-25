@@ -16,24 +16,38 @@ export class PostService {
     return this.http.post<Post>(`${this.baseApiUrl}post/`, postData);
   }
 
-  createComment(postData: Partial<Post>): Observable<Post> {
-    return this.http.post<Post>(`${this.baseApiUrl}comment/`, postData);
+  updatePost(postId: number, updateData: Partial<Post>): Observable<Post> {
+    return this.http.patch<Post>(`${this.baseApiUrl}post/${postId}`, updateData);
   }
-
-  getPosts(){
-    return this.http.get<Post[]>(`${this.baseApiUrl}post/`)
-  }
+  getPosts() {
+      return this.http.get<Post[]>(`${this.baseApiUrl}post/`)
+    }
+  deletePost(postId: number): Observable<void> {
+      return this.http.delete<void>(`${this.baseApiUrl}post/${postId}`);
+    }
 
   getSubscriptionPosts(){
-    return this.http.get<Post[]>(`${this.baseApiUrl}post/my_subscriptions`)
-  }
+      return this.http.get<Post[]>(`${this.baseApiUrl}post/my_subscriptions`)
+    }
 
   getPostById(postId: number): Observable<Post> {
     return this.http.get<Post>(`${this.baseApiUrl}post/${postId}`);
   }
 
-  deletePost(postId: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseApiUrl}post/${postId}`);
+  createComment(postData: Partial<Post>): Observable<Post> {
+    return this.http.post<Post>(`${this.baseApiUrl}comment/`, postData);
+  }
+
+  getComment() {
+
+  }
+
+  editComment() {
+
+  }
+
+  deleteComment(commentId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseApiUrl}comment/${commentId}`);
   }
 
   likePost(postId: number): Observable<Post> {

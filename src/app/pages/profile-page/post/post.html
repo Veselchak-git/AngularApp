@@ -10,10 +10,16 @@
         </button>
         @if (isPostMenuOpen(post.id)) {
           <div class="dropdown-menu" (click)="$event.stopPropagation()">
-            <button class="post-menu-btns">Редактировать</button>
+            <button class="post-menu-btns" (click)="editPost(post)">Редактировать</button>
             <button class="post-menu-btns" (click)="deletePost(post.id)">Удалить</button>
           </div>
         }
+        @if (showEditModal) {
+          <app-post-editor
+            [editpost]="selectedPost"
+            (close)="onEditModalClose($event)">
+          </app-post-editor>
+}
       </div>
     </header>
     <p class="post-content regular">{{ post.content }}</p>
@@ -21,17 +27,19 @@
       <div class="comments-wrapper">
         <button class="show-comments-btn show-menu-btn " (click)="toggleCommentsMenu($event, post.id)">
           <svg icon="comment"></svg>
+          <p>{{post.comments.length}}</p>
         </button>
-
       </div>
-        <button class="like-btn show-menu-btn" (click)="toggleLike(post)">
+      @if (profiles$ | async; as profile) {
+        <button class="like-btn show-menu-btn" (click)="toggleLike(post, profile.id)">
           <svg icon="like"></svg>
           <p>{{post.likes}}</p>
         </button>
+      }
     </div>
     @if (isCommentsMenuOpen(post.id)) {
-              <p>{{post.content}}</p>                       <!--!!!!!!!!!!!!!!!ДОЛЖЕН БЫТЬ post.comments!!!!!!!!!!!!!!!!!!!!!!!-->
-            }
+      <p>{{post.comments}}</p>                       <!--!!!!!!!!!!!!!!!ДОЛЖЕН БЫТЬ post.comments!!!!!!!!!!!!!!!!!!!!!!!-->
+    }
   </div>
 }
 

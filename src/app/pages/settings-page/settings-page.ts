@@ -8,7 +8,7 @@ import { AvatarUpload } from "./avatar-upload/avatar-upload";
 @Component({
   selector: 'app-settings-page',
   standalone: true,
-  imports: [ProfileHeader, ReactiveFormsModule, AvatarUpload],
+  imports: [ReactiveFormsModule, AvatarUpload],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss',
 })
