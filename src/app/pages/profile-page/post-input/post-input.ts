@@ -5,7 +5,7 @@ import { Profile } from '../../../data/interfaces/profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ProfileService } from '../../../data/services/profile';
-import { switchMap } from 'rxjs';
+import { firstValueFrom, switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { SvgIcon } from "../../../common-ui/svg-icon/svg-icon";
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
@@ -28,6 +28,8 @@ export class PostInput {
   postText = '';
   showPicker = false;
   isCurrentUser: boolean = false;
+  isCurrentUserId =  firstValueFrom(this.profileService.getMe());
+
 
   profile$ = this.route.params
     .pipe(
@@ -65,7 +67,6 @@ export class PostInput {
     });
     this.postText = "";
     this.showPicker = false;
-
   }
 }
 

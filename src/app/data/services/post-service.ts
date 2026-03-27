@@ -21,15 +21,15 @@ export class PostService {
     return this.http.patch<Post>(`${this.baseApiUrl}post/${postId}`, updateData);
   }
   getPosts() {
-      return this.http.get<Post[]>(`${this.baseApiUrl}post/`)
-    }
+    return this.http.get<Post[]>(`${this.baseApiUrl}post/`)
+  }
   deletePost(postId: number): Observable<void> {
-      return this.http.delete<void>(`${this.baseApiUrl}post/${postId}`);
-    }
+    return this.http.delete<void>(`${this.baseApiUrl}post/${postId}`);
+  }
 
   getSubscriptionPosts(){
-      return this.http.get<Post[]>(`${this.baseApiUrl}post/my_subscriptions`)
-    }
+    return this.http.get<Post[]>(`${this.baseApiUrl}post/my_subscriptions`)
+  }
 
   getPostById(postId: number): Observable<Post> {
     return this.http.get<Post>(`${this.baseApiUrl}post/${postId}`);
@@ -39,8 +39,8 @@ export class PostService {
     return this.http.post<CommentInterface>(`${this.baseApiUrl}comment/`, commentData);
   }
 
-  getComments(commentId: number): Observable<Post> {
-    return this.http.get<Post>(`${this.baseApiUrl}comment/${commentId}`);
+  getComments(commentId: number): Observable<CommentInterface> {
+    return this.http.get<CommentInterface>(`${this.baseApiUrl}comment/${commentId}`);
   }
 
   editComment() {

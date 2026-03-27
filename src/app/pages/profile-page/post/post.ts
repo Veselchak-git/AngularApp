@@ -1,4 +1,4 @@
-import { switchMap } from 'rxjs';
+import { firstValueFrom, switchMap } from 'rxjs';
 import { Post as PostModel} from './../../../data/interfaces/post.interface';
 import { Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { PostService } from '../../../data/services/post-service';
@@ -9,11 +9,12 @@ import { SvgIcon } from '../../../common-ui/svg-icon/svg-icon';
 import { ProfileService } from '../../../data/services/profile';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { PostEditor } from '../post-editor/post-editor';
-import { PostInput } from "../post-input/post-input";
+import { PickerComponent } from "@ctrl/ngx-emoji-mart";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-post',
-  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor],
+  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor, PickerComponent, FormsModule],
   standalone: true,
   templateUrl: './post.html',
   styleUrl: './post.scss',
@@ -34,6 +35,7 @@ export class Post {
   postText = '';
   showPicker = false;
   showEditModal = false;
+  isCurrentUserId =  firstValueFrom(this.profileService.getMe());
 
   profiles$ = this.route.params
     .pipe(
@@ -46,6 +48,13 @@ export class Post {
         return this.profileService.getAccount(id);
       })
     );
+
+  comments$ = this.route.params
+    .pipe(
+      switchMap(({postId}) => {
+        return this.postService.getComments(postId);
+      })
+    )
 
   editPost(post: PostModel) {
     this.selectedPost = post;
@@ -62,7 +71,7 @@ export class Post {
 
 
       this.postService.updatePost(this.selectedPost.id, updateData).subscribe({
-        next: (updatedPost) => {
+        next: () => {
           // После успеха перезагружаем список, чтобы синхронизировать
           this.posts$ = this.postService.getPosts();
           this.closeEditModal();
@@ -152,5 +161,30 @@ export class Post {
       });
   }
 
+  addEmoji(event: any) {
+    this.postText += event.emoji.native;
+  }
+
+  autoResize(event: Event) {
+    const textarea = event.target as HTMLTextAreaElement;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  toggleEmojiPicker() {
+    this.showPicker = !this.showPicker;
+  }
+
+  sendComment(postId:number) {
+    const newComment = {
+      text: this.postText,
+      postId: postId
+    }
+    this.postService.createComment(newComment).subscribe({
+      next: () => {window.location.reload()}
+    });
+    this.postText = "";
+    this.showPicker = false;
+  }
 
 }

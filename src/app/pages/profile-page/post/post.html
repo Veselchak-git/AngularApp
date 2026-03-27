@@ -38,10 +38,39 @@
             </button>
         </div>
         @if (isCommentsMenuOpen(post.id)) {
-            <p>{{post.comments}}</p>
-            <p>Здесь должен быть комментарий</p>
-        }                        
-      </div>
+          @if (comments$ | async; as comment) {
+            {{comment.commentId}}
+          }
+          <div class="post-input-wrapper">
+            @if (profile.avatarUrl) {
+              <img class="post-input__avatar" [src]="profile.avatarUrl | imgUrl" alt="">
+            } @else {
+              <img src="/assets/images/avatar-placeholder.png" alt="">
+            }
+            <textarea
+              class="tt-form-input post-input"
+              placeholder="Напишите что-нибудь..."
+              [(ngModel)]="postText"
+              rows="1"
+              (input)="autoResize($event)"
+            ></textarea>
+            <button class="emoji-btn" (click)="toggleEmojiPicker()">
+              <svg icon="emoji-btn" class="to-emoji-icon"></svg>
+            </button>
+            <button type="button" class="btn message-btn" (click)="sendComment(post.id)">
+              <svg icon="message-btn" class="to-message-icon"></svg>
+            </button>
+          </div>
+          @if (showPicker) {
+            <div class="emoji-picker-container">
+              <emoji-mart
+                title="Выберите эмодзи"
+                (emojiClick)="addEmoji($event)"
+              ></emoji-mart>
+            </div>
+          }
+        }
+    </div>
     }
   }
 }
