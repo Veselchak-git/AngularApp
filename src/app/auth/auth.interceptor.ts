@@ -1,6 +1,6 @@
 import {HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { AuthService } from "./auth";
+import { AuthService } from "../data/services/auth";
 import { BehaviorSubject, catchError, filter, switchMap, tap, throwError } from "rxjs";
 
 let isRefreshing$ = new BehaviorSubject<boolean>(false);

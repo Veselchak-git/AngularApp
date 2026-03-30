@@ -1,5 +1,5 @@
 import { inject } from "@angular/core"
-import { AuthService } from "./auth"
+import { AuthService } from "../data/services/auth"
 import { Router } from "@angular/router";
 
 export const canActivateAuth = () => {
