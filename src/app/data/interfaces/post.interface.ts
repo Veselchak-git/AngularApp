@@ -1,3 +1,4 @@
+import { CommentInterface } from './comment.interface';
 import { Profile } from './profile.interface';
 export interface Post {
     id: number,
@@ -10,5 +11,5 @@ export interface Post {
     updatedAt: string,
     likes: number,
     likesUsers: String[],
-    comments: String[]
+    comments: CommentInterface[]
 }

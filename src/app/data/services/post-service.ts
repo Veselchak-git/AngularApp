@@ -39,12 +39,12 @@ export class PostService {
     return this.http.post<CommentInterface>(`${this.baseApiUrl}comment/`, commentData);
   }
 
-  getComments(commentId: number): Observable<CommentInterface> {
-    return this.http.get<CommentInterface>(`${this.baseApiUrl}comment/${commentId}`);
+  getComment(commentId: number): Observable<CommentInterface[]> {
+    return this.http.get<CommentInterface[]>(`${this.baseApiUrl}comment/${commentId}`);
   }
 
-  editComment() {
-
+  updateComment(commentId: number, updateData: Partial<CommentInterface>): Observable<CommentInterface> {
+    return this.http.patch<CommentInterface>(`${this.baseApiUrl}comment/${commentId}`, updateData)
   }
 
   deleteComment(commentId: number): Observable<void> {

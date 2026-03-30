@@ -1,6 +1,6 @@
-import { firstValueFrom, switchMap } from 'rxjs';
+import { firstValueFrom, switchMap, tap } from 'rxjs';
 import { Post as PostModel} from './../../../data/interfaces/post.interface';
-import { Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { PostService } from '../../../data/services/post-service';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -8,13 +8,15 @@ import { ImgUrlPipe } from "../../../helpers/pipes/img-url-pipe";
 import { SvgIcon } from '../../../common-ui/svg-icon/svg-icon';
 import { ProfileService } from '../../../data/services/profile';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { PostEditor } from '../post-editor/post-editor';
+import { PostEditor } from '../tools/post-editor/post-editor';
 import { PickerComponent } from "@ctrl/ngx-emoji-mart";
 import { FormsModule } from '@angular/forms';
+import { CommentInterface } from '../../../data/interfaces/comment.interface';
+import { CommentEditor } from "../tools/comment-editor/comment-editor";
 
 @Component({
   selector: 'app-post',
-  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor, PickerComponent, FormsModule],
+  imports: [AsyncPipe, DatePipe, ImgUrlPipe, SvgIcon, PostEditor, PickerComponent, FormsModule, CommentEditor],
   standalone: true,
   templateUrl: './post.html',
   styleUrl: './post.scss',
@@ -30,12 +32,23 @@ export class Post {
   subPosts$ = this.postService.getSubscriptionPosts();
   postMenuMap = new Map<number, boolean>();
   commentsMenuMap = new Map<number, boolean>();
+  commentsMap = new Map<number, CommentInterface[]>();
   isCurrentUser: boolean = false;
   isLiked!: boolean;
   postText = '';
   showPicker = false;
   showEditModal = false;
+  showCommentEditor = false;
+  editingCommentId: number | null = null;
+  editingCommentOldText = '';
   isCurrentUserId =  firstValueFrom(this.profileService.getMe());
+  posts: PostModel[] = [];
+
+  ngOnInit() {
+    this.posts$.subscribe(posts => {
+      this.posts = posts;
+    });
+  }
 
   profiles$ = this.route.params
     .pipe(
@@ -49,13 +62,6 @@ export class Post {
       })
     );
 
-  comments$ = this.route.params
-    .pipe(
-      switchMap(({postId}) => {
-        return this.postService.getComments(postId);
-      })
-    )
-
   editPost(post: PostModel) {
     this.selectedPost = post;
     this.showEditModal = true;
@@ -67,9 +73,6 @@ export class Post {
       // Оптимистичное обновление (меняем текст сразу)
       const previousContent = this.selectedPost.content;
       this.selectedPost.content = event.content;
-
-
-
       this.postService.updatePost(this.selectedPost.id, updateData).subscribe({
         next: () => {
           // После успеха перезагружаем список, чтобы синхронизировать
@@ -102,10 +105,15 @@ export class Post {
     });
   }
 
-  togglePostMenu(event: Event, postId: number) {
+  togglePostSettingsMenu(event: Event, postId: number) {
     event.stopPropagation();
     const current = this.postMenuMap.get(postId) || false;
     this.postMenuMap.set(postId, !current);
+  }
+  toggleCommentSettingsMenu(event: Event, commentId: number) {
+    event.stopPropagation();
+    const current = this.commentsMenuMap.get(commentId) || false;
+    this.commentsMenuMap.set(commentId, !current);
   }
 
   toggleCommentsMenu(event: Event, postId: number) {
@@ -176,15 +184,89 @@ export class Post {
   }
 
   sendComment(postId:number) {
+    if (!this.postText.trim()) return;
     const newComment = {
       text: this.postText,
-      postId: postId
+      postId: postId,
     }
     this.postService.createComment(newComment).subscribe({
-      next: () => {window.location.reload()}
+      next: (createdComment) => {
+        // Добавляем новый комментарий в локальный Map
+        const currentComments = this.commentsMap.get(postId) || [];
+        this.commentsMap.set(postId, [createdComment, ...currentComments]);
+        this.postText = '';
+        this.showPicker = false;
+        window.location.reload();
+      },
+      error: (err) => {
+        console.error('Ошибка отправки комментария', err);
+      }
     });
     this.postText = "";
     this.showPicker = false;
   }
+  deleteComment(postId: number, commentId: number) {
+    this.postService.deleteComment(commentId).subscribe({
+      next: () => {
+        const post = this.posts.find(p => p.id === postId);
+        if (post) {
+          post.comments = post.comments.filter(c => c.id !== commentId);
+        }
+        this.commentsMenuMap.delete(commentId);
+        window.location.reload();
+      },
+      error: (err) => console.error('Ошибка удаления комментария', err)
+    });
+  }
 
+  openCommentEditor(commentId: number, currentText: string) {
+    this.editingCommentId = commentId;
+    this.editingCommentOldText = currentText;
+    this.showCommentEditor = true;
+  }
+
+  // Закрыть редактор
+  closeCommentEditor() {
+    this.showCommentEditor = false;
+    this.editingCommentId = null;
+  }
+
+  onCommentSaved(newText: string, post: PostModel) {
+    if (!this.editingCommentId) return;
+
+    // Находим комментарий в локальных данных
+    let targetComment: any = null;
+    let targetPost: any = null;
+    for (const post of this.posts) {
+      const comment = post.comments.find((c: any) => c.id === this.editingCommentId);
+      if (comment) {
+        targetComment = comment;
+        targetPost = post;
+        break;
+      }
+    }
+
+    if (!targetComment) {
+      this.closeCommentEditor();
+      return;
+    }
+
+    // Оптимистичное обновление (меняем текст сразу)
+    const oldText = targetComment.text;
+    targetComment.text = newText;
+    // Триггерим change detection – создаём новый массив
+    post.comments = [...targetPost.comments];
+
+    // Отправляем на сервер
+    this.postService.updateComment(this.editingCommentId, { text: newText }).subscribe({
+      error: (err) => {
+        console.error(err);
+        // Откат при ошибке
+        targetComment.text = oldText;
+        targetPost.comments = [...targetPost.comments];
+      }
+    });
+
+    this.closeCommentEditor();
+  }
 }

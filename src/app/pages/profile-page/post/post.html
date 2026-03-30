@@ -1,13 +1,28 @@
 @if (profiles$ | async; as profile) {
   @if (isCurrentUser) {
     @for (post of posts$ | async; track post.id) {
+
+      @if (showEditModal) {
+        <app-post-editor
+          [editpost]="selectedPost"
+          (close)="onEditModalClose($event)">
+        </app-post-editor>
+      }
+      @if (showPicker) {
+        <div class="emoji-picker-container">
+          <emoji-mart
+            title="Выберите эмодзи"
+            (emojiClick)="addEmoji($event)"
+          ></emoji-mart>
+        </div>
+      }
       <div class="post-wrapper">
         <header class="post-header">
           <img class="post__avatar" [src]="post.author.avatarUrl | imgUrl" alt="">
           <span class="post-author">{{ post.author.firstName }} {{ post.author.lastName }}</span>
           <span class="post-date medium-text"> {{ post.createdAt | date }}</span>
           <div class="post-menu-wrapper">
-            <button class="show-menu-btn menu-btn" (click)="togglePostMenu($event, post.id)">
+            <button class="show-menu-btn menu-btn" (click)="togglePostSettingsMenu($event, post.id)">
               <svg icon="post-menu"></svg>
             </button>
             @if (isPostMenuOpen(post.id)) {
@@ -15,12 +30,6 @@
                 <button class="post-menu-btns" (click)="editPost(post)">Редактировать</button>
                 <button class="post-menu-btns" (click)="deletePost(post.id)">Удалить</button>
               </div>
-            }
-            @if (showEditModal) {
-              <app-post-editor
-                [editpost]="selectedPost"
-                (close)="onEditModalClose($event)">
-              </app-post-editor>
             }
           </div>
         </header>
@@ -37,43 +46,69 @@
               <p>{{post.likes}}</p>
             </button>
         </div>
-        @if (isCommentsMenuOpen(post.id)) {
-          @if (comments$ | async; as comment) {
-            {{comment.commentId}}
-          }
-          <div class="post-input-wrapper">
-            @if (profile.avatarUrl) {
-              <img class="post-input__avatar" [src]="profile.avatarUrl | imgUrl" alt="">
-            } @else {
-              <img src="/assets/images/avatar-placeholder.png" alt="">
+        <div class="comment-wrapper">
+          @if (isCommentsMenuOpen(post.id)) {
+            @for (comment of post.comments; track comment.id) {
+              <header class="comment-header post-header">
+                <img class="comment__avatar post__avatar" [src]="post.author.avatarUrl | imgUrl" alt="">
+                <span class="comment-author">{{ comment.author.firstName }} {{ comment.author.lastName }}</span>
+                <span class="post-date medium-text">{{ comment.createdAt | date }}</span>
+                <div class="comment-menu-wrapper">
+                  <button class="show-menu-btn menu-btn" (click)="toggleCommentSettingsMenu($event, comment.id)">
+                    <svg icon="post-menu"></svg>
+                  </button>
+                  @if (isCommentsMenuOpen(comment.id)) {
+                    <div class="dropdown-menu" (click)="$event.stopPropagation()">
+                      <button class="comment-menu-btns post-menu-btns" (click)="openCommentEditor(comment.id, comment.text)">Редактировать</button>
+                      <button class="comment-menu-btns post-menu-btns" (click)="deleteComment(post.id, comment.id)">Удалить</button>
+                    </div>
+                  }
+                </div>
+
+              </header>
+              <span class="comment-content regular">{{ comment.text }}</span>
             }
-            <textarea
-              class="tt-form-input post-input"
-              placeholder="Напишите что-нибудь..."
-              [(ngModel)]="postText"
-              rows="1"
-              (input)="autoResize($event)"
-            ></textarea>
-            <button class="emoji-btn" (click)="toggleEmojiPicker()">
-              <svg icon="emoji-btn" class="to-emoji-icon"></svg>
-            </button>
-            <button type="button" class="btn message-btn" (click)="sendComment(post.id)">
-              <svg icon="message-btn" class="to-message-icon"></svg>
-            </button>
-          </div>
-          @if (showPicker) {
-            <div class="emoji-picker-container">
-              <emoji-mart
-                title="Выберите эмодзи"
-                (emojiClick)="addEmoji($event)"
-              ></emoji-mart>
-            </div>
+            @empty {
+              <p>Нет комментариев. Будьте первым!</p>
+            }
+
+            
+            @if (showCommentEditor) {
+              <app-comment-editor
+                [initialText]="editingCommentOldText"
+                (saveComment)="onCommentSaved($event, post)"
+                (close)="closeCommentEditor()"
+              ></app-comment-editor>
+            }
           }
-        }
-    </div>
+        </div>
+
+        <div class="post-input-wrapper">
+          @if (profile.avatarUrl) {
+            <img class="post-input__avatar" [src]="profile.avatarUrl | imgUrl" alt="">
+          }
+          @else {
+            <img src="/assets/images/avatar-placeholder.png" alt="">
+          }
+          <textarea
+            class="tt-form-input post-input"
+            placeholder="Напишите комментарий..."
+            [(ngModel)]="postText"
+            rows="1"
+            (input)="autoResize($event)"
+          ></textarea>
+          <button class="emoji-btn" (click)="toggleEmojiPicker()">
+            <svg icon="emoji-btn" class="to-emoji-icon"></svg>
+          </button>
+          <button type="button" class="btn message-btn" (click)="sendComment(post.id)">
+            <svg icon="message-btn" class="to-message-icon"></svg>
+          </button>
+        </div>
+      </div>
     }
   }
 }
+
 
 
 

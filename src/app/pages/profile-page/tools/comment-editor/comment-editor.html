@@ -1,0 +1,24 @@
+<div class="modal-overlay" (click)="cancel()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <h2 class="h6">Редактировать комментарий</h2>
+    <textarea
+      [(ngModel)]="text"
+      placeholder="Текст комментария">
+    </textarea>
+    <div class="modal-actions">
+      @if (showPicker) {
+        <div class="emoji-picker-container">
+          <emoji-mart
+            title="Выберите эмодзи"
+            (emojiClick)="addEmoji($event)"
+          ></emoji-mart>
+        </div>
+      }
+      <button class="modal-container-btns emoji-btn" (click)="toggleEmojiPicker()">
+        <svg icon="emoji-btn" class="to-emoji-icon"></svg>
+      </button>
+      <button class="modal-container-btns cancel-btn" (click)="cancel()">Отмена</button>
+      <button class="modal-container-btns save-btn" (click)="save()">Сохранить</button>
+    </div>
+  </div>
+</div>
