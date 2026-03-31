@@ -5,6 +5,7 @@ import { ProfilePage } from './pages/profile-page/profile-page';
 import { Layout } from './common-ui/layout/layout';
 import { canActivateAuth } from './auth/access.guard';
 import { SettingsPage } from './pages/settings-page/settings-page';
+import { ChatsPage } from './pages/chats-page/chats-page';
 
 export const routes: Routes = [
   {
@@ -12,7 +13,8 @@ export const routes: Routes = [
       {path: '', redirectTo: 'profile/me', pathMatch: 'full'},
       {path: 'profile/:id', component: ProfilePage},
       {path: 'settings', component: SettingsPage},
-      {path: 'search', component: SearchPage}
+      {path: 'search', component: SearchPage},
+      {path: 'chats', component: ChatsPage}
     ],
     canActivate: [canActivateAuth]
   },
