@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Profile } from '../interfaces/profile.interface';
-import { map, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Pageble } from '../interfaces/pageble.interface';
 import { Post } from '../interfaces/post.interface';
 
@@ -13,6 +13,9 @@ export class ProfileService {
   baseApiUrl = 'https://icherniakov.ru/yt-course/';
   me = signal<Profile | null>(null);
   filteredProfiles = signal<Profile[]>([]);
+  private subscriptionsCache: Profile[] | null = null;
+  private subscriptionsSubject = new BehaviorSubject<Profile[]>([]);
+  public subscriptions$ = this.subscriptionsSubject.asObservable();
 
   getTestAccounts() {
     return this.http.get<Profile[]>(`${this.baseApiUrl}account/test_accounts`);
@@ -57,4 +60,49 @@ export class ProfileService {
     )
   }
 
+  subscribeToUser(id: number) {
+    return this.http.post<Profile>(`${this.baseApiUrl}account/subscribe/${id}`, {})
+  }
+
+  unsubscribeFromUser(id: number) {
+    return this.http.delete(`${this.baseApiUrl}account/subscribe/${id}`);
+  }
+
+  getSubscriptions() {
+     return this.http.get<Pageble<Profile>>(`${this.baseApiUrl}account/subscriptions/`)
+  }
+
+  getSubscriptionsById(id: number) {
+     return this.http.get<Pageble<Profile>>(`${this.baseApiUrl}account/subscriptions/${id}`)
+  }
+
+  loadSubscriptions(): void {
+    // Если уже есть в кеше, не загружаем
+    if (this.subscriptionsCache) {
+      this.subscriptionsSubject.next(this.subscriptionsCache);
+      return;
+    }
+
+    // Загружаем один раз
+    this.getSubscriptions().subscribe({
+      next: (response) => {
+        this.subscriptionsCache = response.items; // Берём только массив
+        this.subscriptionsSubject.next(this.subscriptionsCache);
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки подписок', err);
+      }
+    });
+  }
+
+  // Обновить кеш после подписки/отписки
+  refreshSubscriptions(): void {
+    this.getSubscriptions().subscribe({
+      next: (response) => {
+        this.subscriptionsCache = response.items;
+        this.subscriptionsSubject.next(this.subscriptionsCache);
+      },
+      error: (err) => console.error('Ошибка обновления подписок', err)
+    });
+  }
 }

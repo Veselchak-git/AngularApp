@@ -36,7 +36,9 @@ export class Post {
   isCurrentUser: boolean = false;
   isLiked!: boolean;
   postText = '';
-  showPicker = false;
+  commentText: {[key: number]: string} = {};
+  commentPickerStates: { [key: number]: boolean } = {};
+  postPickerOpen = false;
   showEditModal = false;
   showCommentEditor = false;
   editingCommentId: number | null = null;
@@ -169,8 +171,12 @@ export class Post {
       });
   }
 
-  addEmoji(event: any) {
+  addEmojiToPost(event: any) {
     this.postText += event.emoji.native;
+  }
+
+  addEmojiToComment(event: any, postId: number) {
+    this.commentText[postId] += event.emoji.native;
   }
 
   autoResize(event: Event) {
@@ -179,14 +185,19 @@ export class Post {
     textarea.style.height = textarea.scrollHeight + 'px';
   }
 
-  toggleEmojiPicker() {
-    this.showPicker = !this.showPicker;
+  togglePostPicker() {
+    this.postPickerOpen = !this.postPickerOpen;
+  }
+
+  toggleCommentPicker(postId: number) {
+    this.commentPickerStates[postId] = !this.commentPickerStates[postId];
   }
 
   sendComment(postId:number) {
-    if (!this.postText.trim()) return;
+    const commText = this.commentText[postId];
+    if (!commText.trim()) return;
     const newComment = {
-      text: this.postText,
+      text: commText,
       postId: postId,
     }
     this.postService.createComment(newComment).subscribe({
@@ -194,16 +205,14 @@ export class Post {
         // Добавляем новый комментарий в локальный Map
         const currentComments = this.commentsMap.get(postId) || [];
         this.commentsMap.set(postId, [createdComment, ...currentComments]);
-        this.postText = '';
-        this.showPicker = false;
+        delete this.commentText[postId];
+        delete this.commentPickerStates[postId];
         window.location.reload();
       },
       error: (err) => {
         console.error('Ошибка отправки комментария', err);
       }
     });
-    this.postText = "";
-    this.showPicker = false;
   }
   deleteComment(postId: number, commentId: number) {
     this.postService.deleteComment(commentId).subscribe({

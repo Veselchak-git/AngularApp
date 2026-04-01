@@ -5,7 +5,10 @@
   @for (profile of profiles(); track profile.id)
   {
     <app-profile-card
-      [profile]="profile">
+      [profile]="profile"
+      [isSubscribed]="isSubscribed(profile.id)"
+      [isCurrentUser]="profile.id === (profileService.me()?.id)"
+      (subscriptionChanged)="onSubscriptionChanged($event)">
     </app-profile-card>
   }
 </div>

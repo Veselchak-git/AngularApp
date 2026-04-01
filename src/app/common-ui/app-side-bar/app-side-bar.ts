@@ -6,7 +6,7 @@ import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AsyncPipe, JsonPipe} from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ImgUrlPipe } from "../../helpers/pipes/img-url-pipe";
-import { AuthService } from '../../data/services/auth';
+import { AuthService } from '../../data/services/auth-service';
 
 @Component({
   selector: 'app-side-bar',

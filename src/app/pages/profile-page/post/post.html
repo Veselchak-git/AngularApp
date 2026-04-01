@@ -8,11 +8,11 @@
           (close)="onEditModalClose($event)">
         </app-post-editor>
       }
-      @if (showPicker) {
+      @if (postPickerOpen) {
         <div class="emoji-picker-container">
           <emoji-mart
             title="Выберите эмодзи"
-            (emojiClick)="addEmoji($event)"
+            (emojiClick)="addEmojiToPost($event)"
           ></emoji-mart>
         </div>
       }
@@ -72,7 +72,7 @@
               <p>Нет комментариев. Будьте первым!</p>
             }
 
-            
+
             @if (showCommentEditor) {
               <app-comment-editor
                 [initialText]="editingCommentOldText"
@@ -93,16 +93,24 @@
           <textarea
             class="tt-form-input post-input"
             placeholder="Напишите комментарий..."
-            [(ngModel)]="postText"
+            [(ngModel)]="commentText[post.id]"
             rows="1"
             (input)="autoResize($event)"
           ></textarea>
-          <button class="emoji-btn" (click)="toggleEmojiPicker()">
+          <button class="emoji-btn" (click)="toggleCommentPicker(post.id)">
             <svg icon="emoji-btn" class="to-emoji-icon"></svg>
           </button>
           <button type="button" class="btn message-btn" (click)="sendComment(post.id)">
             <svg icon="message-btn" class="to-message-icon"></svg>
           </button>
+          @if (commentPickerStates[post.id]) {
+            <div class="emoji-picker-container">
+              <emoji-mart
+                title="Выберите эмодзи"
+                (emojiClick)="addEmojiToComment($event, post.id)"
+              ></emoji-mart>
+            </div>
+          }
         </div>
       </div>
     }
