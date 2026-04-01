@@ -83,10 +83,12 @@
 }
 
 .message-btn {
+  box-sizing: border-box;
   width: 124px;
   height: 44px;
   display: flex;
   align-items: center;
+  padding: 0px 16px;
   gap: 8px;
   svg {
     width: 16px;
