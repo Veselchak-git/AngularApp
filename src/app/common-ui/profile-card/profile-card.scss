@@ -4,7 +4,7 @@
   grid-template-columns: repeat(2, 1fr) 250px 1fr;
   padding: 32px 24px;
   grid-gap: 32px;
-
+  background: var(--dark-color);
 }
 
 .avatar-name {
@@ -40,6 +40,21 @@
   gap: 8px;
 }
 
+.unsubscribe-btn {
+  padding: 0;
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dark-color);
+  border: 1px solid var(--primary-color);
+  svg {
+    color: var(--primary-color);
+  }
+}
+
 .subscribe-icon {
   width: 16px;
   height: 16px;
@@ -51,7 +66,9 @@
   height: 44px;
   display: flex;
   align-items: center;
-  padding: 14px 16px;
+  justify-content: center;
+  padding: 0;
+  padding-left: 5px;
 }
 
 .visit-icon {
@@ -63,4 +80,17 @@
 .profile-card_action-btns {
   display: flex;
   gap: 8px;
+}
+
+.message-btn {
+  width: 124px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--dark-color);
+  }
 }

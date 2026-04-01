@@ -31,13 +31,23 @@
       </div>
       <h3 class="h6 mb16 mt16">Навыки</h3>
       <div class="stack-wrapper">
-        @for (skill of profile.stack; track skill) {
-          <div class="skill-tag">{{ skill }}</div>
+        @if (!profile.stack || profile.stack.length === 0) {
+          <span>Навыки отсутствуют</span>
+        }
+        @else {
+          @for (skill of profile.stack; track skill) {
+            <div class="skill-tag">{{ skill }}</div>
+          }
         }
       </div>
 
       <h3 class="h6 mb16 mt16">О себе</h3>
-      <p class="medium-text">{{ profile.description }}</p>
+      @if (profile.description == '') {
+        <span>Описание отсутствует</span>
+      }
+      @else {
+        <p class="medium-text">{{ profile.description }}</p>
+      }
     </div>
   </main>
 }

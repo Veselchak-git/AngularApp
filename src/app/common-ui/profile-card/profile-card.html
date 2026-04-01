@@ -21,20 +21,41 @@
         <span class="subtitle">{{profile.username}}</span>
       </div>
     </div>
-    <div class="profile-card__description">{{profile.description}}</div>
+    @if (profile.description == '') {
+      <span>Описание отсутствует</span>
+    }
+    @else {
+      <div class="profile-card__description">{{profile.description}}</div>
+    }
+
 
     <div class="profile-card__tags">
-      @for (skill of profile.stack; track skill)
-      {
-        <div class="skill-tag">{{skill}}</div>
+      @if (!profile.stack || profile.stack.length === 0) {
+        <span>Навыки отсутствуют</span>
+      }
+      @else {
+        @for (skill of profile.stack; track skill) {
+          <div class="skill-tag">{{ skill }}</div>
+        }
       }
     </div>
     <div class="profile-card_action-btns">
       @if (!isCurrentUser) {
-        <button type="button" class="btn subscribe-btn" (click)="toggleSubscription()" [disabled]="isSubscribing">
-          {{isSubscribed ? 'Отписаться' : 'Подписаться'}}
-          <svg icon="subscribe" class="subscribe-icon"></svg>
-        </button>
+        @if (isSubscribed) {
+          <button type="button" class="btn unsubscribe-btn" (click)="toggleSubscription()" [disabled]="isSubscribing">
+            <svg icon="unsubscribe" class="unsubscribe-icon subscribe-icon"></svg>
+          </button>
+          <button type="button" class="btn message-btn">Написать
+            <svg icon="message-btn" class="to-message-icon"></svg>
+          </button>
+        }
+        @else {
+          <button type="button" class="btn subscribe-btn" (click)="toggleSubscription()" [disabled]="isSubscribing">
+            Подписаться
+            <svg icon="subscribe" class="subscribe-icon"></svg>
+          </button>
+        }
+
       }
 
 

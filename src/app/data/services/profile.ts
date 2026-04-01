@@ -60,20 +60,20 @@ export class ProfileService {
     )
   }
 
-  subscribeToUser(id: number) {
-    return this.http.post<Profile>(`${this.baseApiUrl}account/subscribe/${id}`, {})
+  subscribeToUser(userId: number) {
+    return this.http.post<Profile>(`${this.baseApiUrl}account/subscribe/${userId}`, {})
   }
 
-  unsubscribeFromUser(id: number) {
-    return this.http.delete(`${this.baseApiUrl}account/subscribe/${id}`);
+  unsubscribeFromUser(userId: number) {
+    return this.http.delete(`${this.baseApiUrl}account/subscribe/${userId}`);
   }
 
   getSubscriptions() {
      return this.http.get<Pageble<Profile>>(`${this.baseApiUrl}account/subscriptions/`)
   }
 
-  getSubscriptionsById(id: number) {
-     return this.http.get<Pageble<Profile>>(`${this.baseApiUrl}account/subscriptions/${id}`)
+  getSubscriptionsById(userId: number) {
+     return this.http.get<Pageble<Profile>>(`${this.baseApiUrl}account/subscriptions/${userId}`)
   }
 
   loadSubscriptions(): void {
