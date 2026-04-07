@@ -45,7 +45,7 @@
           <button type="button" class="btn unsubscribe-btn" (click)="toggleSubscription()" [disabled]="isSubscribing">
             <svg icon="unsubscribe" class="unsubscribe-icon subscribe-icon"></svg>
           </button>
-          <button type="button" class="btn message-btn">Написать
+          <button type="button" class="btn message-btn" (click)="createChat(profile)">Написать
             <svg icon="message-btn" class="to-message-icon"></svg>
           </button>
         }

@@ -4,8 +4,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url-pipe';
 import { SvgIcon } from "../svg-icon/svg-icon";
 import {Router } from '@angular/router';
-import { debounceTime, firstValueFrom, forkJoin } from 'rxjs';
-import { Pageble } from '../../data/interfaces/pageble.interface';
+import { Chat } from '../../data/services/chat-service';
 @Component({
   selector: 'app-profile-card',
   standalone: true,
@@ -19,6 +18,7 @@ export class ProfileCard {
   @Input() isSubscribed = false;
   @Output() subscriptionChanged = new EventEmitter<{ profileId: number; isSubscribed: boolean }>();
   profileService = inject(ProfileService);
+  chatService = inject(Chat);
   router = inject(Router);
 
   isSubscribing = false;
@@ -27,11 +27,7 @@ export class ProfileCard {
     if (this.isSubscribing) return;
 
     this.isSubscribing = true;
-
-    // Сохраняем старое состояние для отката
     const oldState = this.isSubscribed;
-
-    // 🔥 Оптимистичное обновление (меняем сразу)
     this.isSubscribed = !this.isSubscribed;
     this.subscriptionChanged.emit({
       profileId: this.profile.id,
@@ -44,13 +40,11 @@ export class ProfileCard {
 
     request$.subscribe({
       next: () => {
-        // Успех - обновляем кеш в фоне
         this.profileService.refreshSubscriptions();
         this.isSubscribing = false;
       },
       error: (err) => {
         console.error('Ошибка', err);
-        // Откат при ошибке
         this.isSubscribed = oldState;
         this.subscriptionChanged.emit({
           profileId: this.profile.id,
@@ -63,5 +57,9 @@ export class ProfileCard {
 
   goToProfile(profileId: number): void {
     this.router.navigate(['/profile', profileId]);
+  }
+
+  createChat(profile: Profile) {
+    this.chatService.createPersonalChat(profile.id).subscribe();
   }
 }

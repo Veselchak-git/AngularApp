@@ -1,1 +1,115 @@
-<p>chats-page works!</p>
+<div class="chat-wrapper">
+  <div class="all-chats">
+    @if (loading$ | async) {
+      <div class="loading">Загрузка чатов...</div>
+    }
+    <div class="chat-search">
+      <input
+      class="chat-search-input"
+      placeholder="Искать..."
+      >
+    </div>
+    @for (chat of chats$ | async; track chat.id) {
+      <div class="chat-item" (click)="openChat()" [routerLink]="['/chats', chat.id]">
+        <header class="chat-item-header">
+          @if (chat.userFrom.avatarUrl == null) {
+            <img
+              src="/assets/images/avatar-placeholder.png"
+              alt=""
+              class="chat-item__avatar">
+          }
+          @else {
+            <img
+              [src]="chat.userFrom.avatarUrl | imgUrl "
+              [alt]="chat.userFrom.lastName"
+              class="chat-item__avatar">
+          }
+          <div class="chat-name">
+            {{ chat.userFrom.firstName}} {{ chat.userFrom.lastName }}
+          </div>
+          {{chat.createdAt}}
+        </header>
+        <span class="last-chat-message">Здесь текст последнего сообщения</span>
+
+      </div>
+
+    } @empty {
+      @if (searchControl.value) {
+        <div class="no-results">Ничего не найдено</div>
+      }
+    }
+  </div>
+  <div class="active-chat">
+
+      @if (isChatOpened) {
+        @if (openedChat$ | async; as openedChat) {
+          <header class="active-chat-header">
+            <button class="chat-action-btns close-chat-btn" (click)="closeChat()">
+              <svg icon="close-chat"></svg>
+            </button>
+            <div class="opened-chat__profile">
+              @if (openedChat.userFirst.avatarUrl == null) {
+              <img
+                src="/assets/images/avatar-placeholder.png"
+                alt=""
+                class="chat-item__avatar">
+            }
+            @else {
+              <img
+                [src]="openedChat.userFirst.avatarUrl | imgUrl "
+                [alt]="openedChat.userFirst.lastName"
+                class="chat-item__avatar">
+            }
+            {{openedChat.userFirst.firstName}} {{openedChat.userFirst.lastName}}
+            </div>
+            <button class="chat-action-btns chat-menu-btn">
+              <svg icon="chat-menu" class="chat-menu-icon"></svg>
+            </button>
+          </header>
+          <div class="active-chat-messages">
+            @for (message of openedChat.messages; track message.id) {
+              <div class="message-item">
+                <div class="message-text">{{ message.text }}</div>
+                <div class="message-time">{{ message.createdAt | date: 'HH:mm' }}</div>
+              </div>
+            }
+          </div>
+          <div class="message-input-wrapper">
+            @if (openedChat.userSecond.avatarUrl) {
+              <img class="message-input__avatar" [src]="openedChat.userSecond.avatarUrl | imgUrl" alt="">
+            } @else {
+              <img src="/assets/images/avatar-placeholder.png" alt="">
+            }
+            <textarea
+              class="tt-form-input message-input"
+              placeholder="Напишите что-нибудь..."
+              [(ngModel)]="messageText"
+              rows="1"
+              (input)="autoResize($event)"
+            ></textarea>
+            <button class="emoji-btn" (click)="toggleEmojiPicker()">
+              <svg icon="emoji-btn" class="to-emoji-icon"></svg>
+            </button>
+            <button type="button" class="btn message-btn" (click)="sendMessage(openedChat.id)">
+              <svg icon="message-btn" class="to-message-icon"></svg>
+            </button>
+          </div>
+          @if (showPicker) {
+            <div class="emoji-picker-container">
+              <emoji-mart
+                title="Выберите эмодзи"
+                (emojiClick)="addEmoji($event)"
+              ></emoji-mart>
+            </div>
+          }
+        }
+      }
+    @else {
+            <span class="take-chat-message">Выберите, кому хотели бы написать</span>
+          }
+
+  </div>
+
+</div>
+
+
