@@ -7,6 +7,10 @@
 
 }
 
+.chat-date {
+  margin-left: auto;
+}
+
 .active-chat {
   flex: 1;
   display: flex;
@@ -36,8 +40,9 @@
   width: 100%;
   max-width: 652px;
   height: 652px;
+  overflow-y: auto;
   &::-webkit-scrollbar {
-    background: var(--light-transparent-color);
+    background: var(--dark-color);
     border-radius: 4px;
     width: 4px;
     cursor: pointer;
@@ -57,15 +62,30 @@
 .all-chats {
   max-width: 380px;
   height: 852px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--light-color);
-  overflow-y: auto;
 }
 
+.chats-list {
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    background: var(--dark-color);
+    border-radius: 4px;
+    width: 3px;
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+  }
+}
 .chat-item {
   border: 1px solid var(--light-color);
   padding: 10px;
   font-size: 12px;
   font-weight: 500;
+  min-height: 100px;
   cursor: pointer;
   &:hover {
     background: var(--dark-hover-color);
@@ -202,4 +222,41 @@
 .emoji-picker-container {
   position: absolute;
   left: 50%;
+  top: 35%;
+}
+
+.userFirst__message {
+  display: flex;
+  flex-direction: column;
+
+  .message-header {
+    display: flex;
+    align-self: flex-start;
+    font-size: 12px;
+    gap: 5px;
+  }
+}
+
+.userSecond__message {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+
+  .message-header {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    font-size: 12px;
+    gap: 5px;
+  }
+
+  .message-text {
+    display: flex;
+    align-self: flex-end;
+    margin-right: 40px;
+    background: var(--primary-color);
+    color: var(--dark-color);
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
 }

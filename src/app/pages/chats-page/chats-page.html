@@ -1,4 +1,5 @@
 <div class="chat-wrapper">
+
   <div class="all-chats">
     @if (loading$ | async) {
       <div class="loading">Загрузка чатов...</div>
@@ -9,8 +10,9 @@
       placeholder="Искать..."
       >
     </div>
-    @for (chat of chats$ | async; track chat.id) {
-      <div class="chat-item" (click)="openChat()" [routerLink]="['/chats', chat.id]">
+    <div class="chats-list">
+      @for (chat of chats$ | async; track chat.id) {
+      <div class="chat-item" (click)="openChat(chat.id)">
         <header class="chat-item-header">
           @if (chat.userFrom.avatarUrl == null) {
             <img
@@ -27,9 +29,17 @@
           <div class="chat-name">
             {{ chat.userFrom.firstName}} {{ chat.userFrom.lastName }}
           </div>
-          {{chat.createdAt}}
+          <div class="chat-date">
+            {{chat.createdAt | date: 'dd.MM.yy'}}
+          </div>
         </header>
-        <span class="last-chat-message">Здесь текст последнего сообщения</span>
+        @if (chat.message == null) {
+          <span class="last-chat-message">Сообщения отсутствуют</span>
+        }
+        @else {
+          <span class="last-chat-message">{{chat.message}}</span>
+        }
+
 
       </div>
 
@@ -38,11 +48,13 @@
         <div class="no-results">Ничего не найдено</div>
       }
     }
+    </div>
+
   </div>
   <div class="active-chat">
 
-      @if (isChatOpened) {
-        @if (openedChat$ | async; as openedChat) {
+      @if ((openedChat$ |async); as openedChat) {
+
           <header class="active-chat-header">
             <button class="chat-action-btns close-chat-btn" (click)="closeChat()">
               <svg icon="close-chat"></svg>
@@ -68,10 +80,55 @@
           </header>
           <div class="active-chat-messages">
             @for (message of openedChat.messages; track message.id) {
-              <div class="message-item">
+              @if (message.userFromId == openedChat.userFirst.id) {
+                <div class="userFirst__message">
+                <header class="message-header">
+
+                  @if (openedChat.userFirst.avatarUrl == null) {
+                    <img
+                    src="/assets/images/avatar-placeholder.png"
+                    alt=""
+                    class="chat-item__avatar">
+                  }
+                  @else {
+                    <img
+                    [src]="openedChat.userFirst.avatarUrl | imgUrl "
+                    [alt]="openedChat.userFirst.lastName"
+                    class="chat-item__avatar">
+                  }
+                  <div class="username">
+                    {{openedChat.userFirst.firstName}} {{openedChat.userFirst.lastName}}
+                  </div>
+                  <div class="message-time">{{ message.createdAt | date: 'HH:mm' }}</div>
+                </header>
+
                 <div class="message-text">{{ message.text }}</div>
-                <div class="message-time">{{ message.createdAt | date: 'HH:mm' }}</div>
-              </div>
+                </div>
+              }
+              @else {
+                <div class="userSecond__message">
+                  <header class="message-header">
+                    <div class="message-time">{{ message.createdAt | date: 'HH:mm' }}</div>
+                    <div class="username">
+                      {{openedChat.userSecond.firstName}} {{openedChat.userSecond.lastName}}
+                    </div>
+                    @if (openedChat.userSecond.avatarUrl == null) {
+                      <img
+                        src="/assets/images/avatar-placeholder.png"
+                        alt=""
+                        class="chat-item__avatar">
+                    }
+                    @else {
+                      <img
+                        [src]="openedChat.userSecond.avatarUrl | imgUrl "
+                        [alt]="openedChat.userSecond.lastName"
+                        class="chat-item__avatar">
+                      }
+                  </header>
+
+                  <div class="message-text">{{ message.text }}</div>
+                </div>
+              }
             }
           </div>
           <div class="message-input-wrapper">
@@ -102,7 +159,7 @@
               ></emoji-mart>
             </div>
           }
-        }
+
       }
     @else {
             <span class="take-chat-message">Выберите, кому хотели бы написать</span>

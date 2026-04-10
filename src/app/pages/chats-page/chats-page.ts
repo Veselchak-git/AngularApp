@@ -28,22 +28,14 @@ export class ChatsPage {
   chatSearchService = inject(ChatSearchService);
   profileService = inject(ProfileService);
   chatService = inject(Chat);
-  route = inject(ActivatedRoute)
+  route = inject(ActivatedRoute);
+  router = inject(Router);
   me$ = toObservable(this.profileService.me);
   chats$ = this.chatService.getChats();
   loading$ = this.chatSearchService.loading$;
   isChatOpened = <boolean>(false);
   messageText = '';
   showPicker = false;
-
-  constructor() {
-    this.route.params
-        .pipe(
-          switchMap(({id}) => this.chatService.getPersonalChat(id))
-        ).subscribe(chat => {
-          this.openedChatSubject.next(chat);
-        })
-  }
 
   toggleEmojiPicker() {
     this.showPicker = !this.showPicker;
@@ -80,11 +72,17 @@ export class ChatsPage {
   });
 }
 
-  openChat() {
-    this.isChatOpened = true;
+  openChat(chatId: number) {
+    this.router.navigate(['/chats', chatId]);
+
+    this.chatService.getPersonalChat(chatId).subscribe(chat => {
+        this.openedChatSubject.next(chat);
+
+    })
   }
 
   closeChat() {
-    this.isChatOpened = false;
+    this.openedChatSubject.next(null);
+    this.router.navigate(['/chats'])
   }
 }

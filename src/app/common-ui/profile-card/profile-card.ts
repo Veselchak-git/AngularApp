@@ -60,6 +60,11 @@ export class ProfileCard {
   }
 
   createChat(profile: Profile) {
-    this.chatService.createPersonalChat(profile.id).subscribe();
+    this.chatService.createPersonalChat(profile.id).subscribe({
+      next: (chat) => {
+        this.router.navigate(['/chats', chat.id])
+      }
+    });
+
   }
 }
