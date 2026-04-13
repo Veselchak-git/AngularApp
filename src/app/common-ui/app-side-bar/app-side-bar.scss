@@ -1,3 +1,5 @@
+@import "../../../utils.scss";
+
 :host {
   display: block;
   padding: 20px 12px;
@@ -39,11 +41,11 @@
       color: var(--primary-color);
     }
   }
-}
 
-.menu-item svg {
-  width: 16px;
-  height: 16px;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .to-subscribers {
@@ -116,7 +118,7 @@
   display: flex;
   flex-direction: column;
   bottom: 100%;
-  right: 0;
+
   margin-bottom: 8px;
   background: var(--dark-color);
   border: 1px solid var(--dark-hover-color);
@@ -144,5 +146,56 @@
     &:last-child {
       border-radius: 0 0 8px 8px;
     }
+  }
+}
+
+@include mobile {
+  :host {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 60px;
+  }
+  .sidebar-text {
+    display: none;
+  }
+  .sidebar-logo {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+  .subscribers-title {
+    display: none;
+  }
+  .subscribers {
+    display: none;
+  }
+  .sidebar__footer {
+    width: 100%;
+    position: relative;
+    background: var(--dark-color);
+    img {
+      display: none;
+    }
+    .username-text {
+      display: none;
+    }
+    grid-template-columns: 1fr;
+    justify-content: center;
+    padding: 4px;
+
+    .settings-btn {
+      background: var(--dark-color);
+      svg {
+        color: var(--light-color);
+      }
+    }
+  }
+  .menu-item {
+    display: flex;
+    padding: 40px 20px;
   }
 }

@@ -20,6 +20,7 @@ export class AppSideBar {
   showMenu = signal(false);
   router = inject(Router);
   auth = inject(AuthService);
+  isMobileMenuOpen = signal(false);
 
   subscribers$ = this.profileService.getSubscribersShortList();
 
@@ -43,11 +44,12 @@ export class AppSideBar {
     }
   ]
 
+
   ngOnInit() {
     firstValueFrom(this.profileService.getMe())
   }
 
-  toggleMenu(event: Event) {
+  toggleSettingsMenu(event: Event) {
     event.stopPropagation();
     this.showMenu.set(!this.showMenu());
   }
