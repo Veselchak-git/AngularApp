@@ -1,6 +1,9 @@
 @use "fonts";
 @use "margins";
 @use "@ctrl/ngx-emoji-mart/picker";
+@use "utils";
+
+@import "utils";
 
 :root {
   --dark-color: black;
@@ -31,11 +34,12 @@ body {
   border-radius: 4px;
   border: 1px solid var(--light-color);
   display: inline;
-  font-size: 12px;
   font-weight: 700;
   line-height: 24px;
   height: 24px;
   height: min-content;
+
+  @include fluid-text(10, 12);
 }
 
 .btn  {
@@ -43,11 +47,12 @@ body {
   background-color: var(--primary-color);
   color: var(--dark-color);
   padding: 10px 20px;
-  font-size: 14px;
   font-weight: 700;
   line-height: 24px;
   cursor: pointer;
   border: 1px solid var(--dark-color);
+
+  @include fluid-text(12, 14);
 
 }
 .btn:hover {
@@ -77,22 +82,25 @@ body {
 
 .subtitle {
   color: var(--light-color);
-  font-size: 14px;
   line-height: 20px;
   font-weight: 400;
+
+  @include fluid-text(12, 14);
 }
 
 .medium-text {
-  font-size: 12px;
   font-weight: 500;
   line-height: 16px;
+
+  @include fluid-text(10, 12);
 }
 
 .regular {
-  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 21px;
+
+  @include fluid-text(12, 14);
 }
 
 .tt-control-label {
@@ -100,6 +108,8 @@ body {
   font-weight: 700;
   font-size: 12px;
   line-height: 16px;
+
+  @include fluid-text(10, 12);
 }
 
 .tt-input {
@@ -111,14 +121,14 @@ body {
   padding: 20px 12px;
   background: var(--dark-color);
   font-weight: 400;
-  font-size: 14px;
   line-height: 21px;
   font-family: 'JetBrains Mono', 'sans-serif';
   color: var(--light-color);
+
+  @include fluid-text(12, 14)
 }
 
 .tt-form-input {
-  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 21px;
@@ -131,27 +141,31 @@ body {
   &:focus-visible {
     outline: 1px solid var(--primary-color);
   }
+
+  @include fluid-text(12, 14);
 }
 
 .tt-form-label {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
+
+  @include fluid-text(10, 12);
 }
 
 .tt-form-label__text {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
   color: var(--light-transparent-color);
+
+  @include fluid-text(10, 12);
 }
 
 .tt-text-area {

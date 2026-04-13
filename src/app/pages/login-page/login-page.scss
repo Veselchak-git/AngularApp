@@ -1,18 +1,44 @@
+@import '../../../utils.scss';
+
 :host {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 100dvh;
   align-items: center;
   margin: 0 5%;
+
+  @include tablet {
+    margin: 0 3%;
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    margin: 0 20px;
+    height: auto;
+    min-height: 100dvh;
+    padding: 40px 0;
+  }
 }
 
 .login-form {
   width: 440px;
+  max-width: 100%;
+  place-self: center;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
-.login-form,
 .big-logo {
   place-self: center;
+  max-width: 100%;
+  height: auto;
+
+  @include mobile {
+    width: 200px;
+    height: 200px;
+  }
 }
 
 .password-input, .username-input {
@@ -45,4 +71,11 @@
   display: flex;
   justify-content: center;
   margin-bottom: 30px;
+
+  @include fluid-text(24, 48)
+}
+
+.tt-control-label {
+  display: block;
+  margin-bottom: 16px;
 }
