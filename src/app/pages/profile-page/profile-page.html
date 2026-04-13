@@ -17,7 +17,13 @@
           <svg icon="settings" class="to-setting-icon"></svg>
         </a>
       }
-
+      <h3 class="h6 mb16 mt16">О себе</h3>
+        @if (profile.description == '') {
+          <p class="medium-text mb16">Описание отсутствует</p>
+        }
+        @else {
+          <p class="medium-text mb16">{{ profile.description }}</p>
+        }
       <h3 class="h6 mb16">Подписчики</h3>
 
       <div class="subscribers-wrapper">
@@ -26,8 +32,10 @@
             <img [src]="subscriber.avatarUrl | imgUrl" alt="">
           </a>
         }
-        <a href="" class="to-subscribers-search" [routerLink]="['/search']">
+        @if (isCurrentUser) {
+          <a href="" class="to-subscribers-search" [routerLink]="['/search']">
         </a>
+        }
       </div>
       <h3 class="h6 mb16 mt16">Навыки</h3>
       <div class="stack-wrapper">
@@ -41,13 +49,7 @@
         }
       </div>
 
-      <h3 class="h6 mb16 mt16">О себе</h3>
-      @if (profile.description == '') {
-        <span>Описание отсутствует</span>
-      }
-      @else {
-        <p class="medium-text">{{ profile.description }}</p>
-      }
+
     </div>
   </main>
 }
