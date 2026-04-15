@@ -1,0 +1,19 @@
+@import "../../../../utils.scss";
+
+.posts {
+  margin-top: 8px;
+  max-width: 688px;
+  height: 600px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    background: var(--dark-color);
+    border-radius: 4px;
+    width: 4px;
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+  }
+}

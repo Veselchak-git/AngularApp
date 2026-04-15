@@ -1,5 +1,5 @@
 import { ChatSearchService } from './../../data/services/chat-search-service';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, map, Observable, startWith, switchMap } from 'rxjs';
 import { ChatInterface } from '../../data/interfaces/chat.interface';
@@ -36,6 +36,18 @@ export class ChatsPage {
   isChatOpened = <boolean>(false);
   messageText = '';
   showPicker = false;
+  isMobile = window.innerWidth <= 768;
+  showChatList = signal(true);
+
+  constructor() {
+    window.addEventListener('resize', () => {
+      this.isMobile = window.innerWidth <= 768;
+      if (!this.isMobile) {
+        // На десктопе показываем оба блока
+        this.showChatList.set(true);
+      }
+    });
+  }
 
   toggleEmojiPicker() {
     this.showPicker = !this.showPicker;
@@ -73,8 +85,10 @@ export class ChatsPage {
 }
 
   openChat(chatId: number) {
+    if (this.isMobile) {
+      this.showChatList.set(false);
+    }
     this.router.navigate(['/chats', chatId]);
-
     this.chatService.getPersonalChat(chatId).subscribe(chat => {
         this.openedChatSubject.next(chat);
 
@@ -82,7 +96,14 @@ export class ChatsPage {
   }
 
   closeChat() {
-    this.openedChatSubject.next(null);
-    this.router.navigate(['/chats'])
+    if (this.isMobile) {
+      this.showChatList.set(true);
+      this.router.navigate(['/chats']);
+    }
+    else {
+      this.openedChatSubject.next(null);
+      this.router.navigate(['/chats'])
+    }
+
   }
 }

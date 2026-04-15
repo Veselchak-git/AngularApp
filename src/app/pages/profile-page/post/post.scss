@@ -1,6 +1,7 @@
 @import "../../../../utils.scss";
 
 .post-wrapper {
+  min-width: 50px;
   max-width: 688px;
   min-height: 76px;
   align-items: center;
@@ -133,7 +134,7 @@
 }
 
 .post-input {
-  min-width: 104px;
+  min-width: 100px;
   max-width: 504px;
   min-height: 33px;
   max-height: 75px;

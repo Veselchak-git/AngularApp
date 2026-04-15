@@ -1,3 +1,5 @@
+@import "../../../utils.scss";
+
 .chat-wrapper {
   display: flex;
   max-width: 1092px;
@@ -34,6 +36,8 @@
   padding: 20px;
   justify-content: space-between;
   border: 1px solid var(--light-color);
+
+  @include fluid-text(12,16);
 }
 
 .active-chat-messages {
@@ -223,6 +227,10 @@
   position: absolute;
   left: 50%;
   top: 35%;
+
+  @include mobile {
+    left: 10%;
+  }
 }
 
 .userFirst__message {
@@ -258,5 +266,7 @@
     color: var(--dark-color);
     padding: 5px 10px;
     border-radius: 10px;
+
+    @include fluid-text(12, 16);
   }
 }
