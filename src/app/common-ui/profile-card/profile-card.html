@@ -17,12 +17,12 @@
       }
 
       <div class="profile-card__name">
-        <strong class="h6">{{profile.firstName}} {{profile.lastName}}</strong>
-        <span class="subtitle">{{profile.username}}</span>
+        <strong class="h6 mobile-profile-card__name">{{profile.firstName}} {{profile.lastName}}</strong>
+        <span class="subtitle mobile-profile-card__subtitile">{{profile.username}}</span>
       </div>
     </div>
     @if (profile.description == '') {
-      <span>Описание отсутствует</span>
+      <span class="profile-card__description">Описание отсутствует</span>
     }
     @else {
       <div class="profile-card__description">{{profile.description}}</div>

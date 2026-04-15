@@ -1,4 +1,4 @@
-
+@import "../../../utils.scss";
 
 .profile-card {
   border: 1px solid var(--light-color);
@@ -7,12 +7,23 @@
   padding: 32px 24px;
   grid-gap: 32px;
   background: var(--dark-color);
+
+  @include mobile {
+    grid-template-columns: 1fr auto;
+    grid-gap: 16px;
+    padding: 20px;
+  }
 }
 
 .avatar-name {
   display: grid;
   grid-template-columns: 70px 1fr;
   grid-gap: 20px;
+
+  @include mobile {
+    grid-template-columns: 48px 1fr;
+    grid-gap: 12px;
+  }
 }
 
 .profile-card__avatar {
@@ -20,18 +31,45 @@
   height: 70px;
   border-radius: 50%;
   overflow: hidden;
+
+  @include mobile {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .profile-card__name {
   display: flex;
   flex-direction: column;
   gap: 9px;
+
+  @include mobile {
+    gap: 4px;
+    justify-content: center;
+
+    .mobile-profile-card__name {
+        font-size: 14px;
+      }
+    .mobile-profile-card__subtitile {
+        font-size: 10px;
+      }
+  }
 }
 
 .profile-card__tags {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+@include mobile {
+  .profile-card__description {
+    display: none;
+  }
 }
 
 .subscribe-btn {
@@ -82,6 +120,12 @@
 .profile-card_action-btns {
   display: flex;
   gap: 8px;
+
+  @include mobile {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    justify-content: center;
+  }
 }
 
 .message-btn {

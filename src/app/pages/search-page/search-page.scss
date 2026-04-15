@@ -1,6 +1,12 @@
+@import "../../../utils.scss";
+
 :host {
-  display: grid;
-  grid-gap: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;           // или 100dvh, зависит от родителя
+  max-height: 100%;
+  overflow: hidden;
+  gap: 8px;
 }
 
 .profile-card__wrapper {
@@ -18,4 +24,5 @@
     background: var(--primary-color);
     border-radius: 4px;
   }
+
 }
