@@ -24,6 +24,7 @@ export class ProfilePage {
   me$ = toObservable(this.profileService.me);
   subscribers$ = this.profileService.getSubscribersShortList(5);
   isCurrentUser: boolean = false;
+  showDetails = false;
 
   profile$ = this.route.params
     .pipe(
@@ -36,4 +37,8 @@ export class ProfilePage {
         return this.profileService.getAccount(id);
       })
     );
+
+  toggleDetails() {
+    this.showDetails = !this.showDetails;
+  }
 }

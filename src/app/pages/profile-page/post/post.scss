@@ -1,3 +1,5 @@
+@import "../../../../utils.scss";
+
 .post-wrapper {
   max-width: 688px;
   min-height: 76px;
@@ -62,8 +64,22 @@
     &:last-child {
       border-radius: 0 0 8px 8px;
     }
+
+    @include fluid-text(12, 14);
+  }
+
+  @include mobile {
+    left: 65%;
   }
 }
+
+@include mobile {
+  .comment-dropdown-menu {
+    position: absolute;
+    bottom: 15%;
+  }
+}
+
 
 .like-btn {
   color: var(--light-color);
@@ -74,6 +90,8 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+
+  @include fluid-text(12,16);
 }
 .post-date {
   color: var(--light-transparent-color);
@@ -131,6 +149,7 @@
     background: var(--primary-color);
     border-radius: 4px;
   }
+
 }
 
 .post-input__avatar {
@@ -173,6 +192,11 @@
 .emoji-picker-container {
   position: absolute;
   left: 70%;
+
+  @include mobile {
+    left: 10%;
+    top: 10%
+  }
 }
 
 .comment-menu-wrapper {
@@ -199,13 +223,12 @@
 }
 
 .comment-header {
-
 }
 
 .comment-content {
   overflow-wrap: break-word;
   max-width: 688px;
-  font-size: 12px;
+  @include fluid-text(10, 12);
 }
 
 .comment-menu-btns {
@@ -217,6 +240,6 @@
 }
 
 .comment-author {
-  font-size: 12px;
+  @include fluid-text(10, 12);
 }
 

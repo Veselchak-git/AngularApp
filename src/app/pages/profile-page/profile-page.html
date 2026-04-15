@@ -5,12 +5,52 @@
       [profile]="profile"
     ></app-profile-header>
   </header>
+  <button class="more-btn mobile-only" (click)="toggleDetails()">
+      Подробнее... {{ showDetails ? '▲' : '▼' }}
+  </button>
   <main class="profile-page__body">
+    @if (showDetails) {
+      <div class="details-section">
+        @if (isCurrentUser) {
+          <a class="mb16 btn to-setting-btn" [routerLink]="['/settings']">
+            Редактировать
+            <svg icon="settings" class="to-setting-icon"></svg>
+          </a>
+        }
+        <h3 class="h6 mb16 mt16">О себе</h3>
+        @if (profile.description == '') {
+          <p class="medium-text mb16">Описание отсутствует</p>
+        } @else {
+          <p class="medium-text mb16">{{ profile.description }}</p>
+        }
+        <h3 class="h6 mb16">Подписчики</h3>
+        <div class="subscribers-wrapper">
+          @for (subscriber of subscribers$ | async; track subscriber.id) {
+            <a class="subscriber-avatar-btn" [routerLink]="['/profile', subscriber.id]">
+              <img [src]="subscriber.avatarUrl | imgUrl" alt="">
+            </a>
+          }
+          @if (isCurrentUser) {
+            <a class="to-subscribers-search" [routerLink]="['/search']"></a>
+          }
+        </div>
+        <h3 class="h6 mb16 mt16">Навыки</h3>
+        <div class="stack-wrapper">
+          @if (!profile.stack || profile.stack.length === 0) {
+            <span>Навыки отсутствуют</span>
+          } @else {
+            @for (skill of profile.stack; track skill) {
+              <div class="skill-tag">{{ skill }}</div>
+            }
+          }
+        </div>
+      </div>
+    }
     <app-post-feed>
 
     </app-post-feed>
 
-    <div>
+    <div class="desktop-only">
       @if (isCurrentUser) {
         <a class="mb16 btn to-setting-btn" [routerLink]="['/settings']">
           Редактировать

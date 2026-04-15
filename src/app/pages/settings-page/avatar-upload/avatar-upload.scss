@@ -1,3 +1,5 @@
+@import "../../../../utils.scss";
+
 :host {
   display: grid;
   grid-gap: 32px;
@@ -10,6 +12,11 @@
   width: 132px;
   height: 132px;
   border-radius: 50%;
+
+  @include mobile {
+    width: 84px;
+    height: 84px;
+  }
 }
 
 .avatar-input {
@@ -40,5 +47,11 @@
     width: 18px;
     height: 18px;
 
+  }
+}
+
+@include mobile {
+  .medium-text {
+    display: none;
   }
 }

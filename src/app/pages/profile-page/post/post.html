@@ -58,7 +58,7 @@
                     <svg icon="post-menu"></svg>
                   </button>
                   @if (isCommentsMenuOpen(comment.id)) {
-                    <div class="dropdown-menu" (click)="$event.stopPropagation()">
+                    <div class="dropdown-menu comment-dropdown-menu" (click)="$event.stopPropagation()">
                       <button class="comment-menu-btns post-menu-btns" (click)="openCommentEditor(comment.id, comment.text)">Редактировать</button>
                       <button class="comment-menu-btns post-menu-btns" (click)="deleteComment(post.id, comment.id)">Удалить</button>
                     </div>

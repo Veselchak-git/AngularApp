@@ -1,3 +1,5 @@
+@import "../../../../utils.scss";
+
 .post-input-wrapper {
   display: grid;
   grid-template-columns: auto 1fr auto auto;
@@ -69,5 +71,9 @@
 .emoji-picker-container {
   position: absolute;
   left: 50%;
+
+  @include mobile {
+    left: 10%;
+  }
 }
 
